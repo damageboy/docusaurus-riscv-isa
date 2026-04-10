@@ -2,6 +2,26 @@
 import { themes as prismThemes } from 'prism-react-renderer';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
+import remarkGridtables from '@adobe/remark-gridtables';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+const remarkKroki = require('remark-kroki-plugin');
+
+const krokiOptions = (id) => ({
+  krokiBase: 'https://kroki.io',
+  lang: 'kroki',
+  langAliases: [
+    'actdiag', 'blockdiag', 'bpmn', 'bytefield', 'c4plantuml',
+    'diagramsnet', 'ditaa', 'erd', 'excalidraw', 'graphviz',
+    'nomnoml', 'nwdiag', 'packetdiag', 'pikchr', 'plantuml',
+    'rackdiag', 'seqdiag', 'structurizr', 'svgbob', 'umlet',
+    'vega', 'vegalite', 'wavedrom',
+  ],
+  imgRefDir: '/img/' + id + '/kroki',
+  imgDir: 'static/img/' + id + '/kroki',
+  verbose: false,
+});
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -27,7 +47,7 @@ const config = {
       ({
         docs: {
           sidebarPath: './sidebars.js',
-          remarkPlugins: [remarkMath],
+          remarkPlugins: [remarkMath, [remarkKroki, krokiOptions('riscv-isa')], remarkGridtables],
           rehypePlugins: [rehypeKatex],
         },
         blog: false,
