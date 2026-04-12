@@ -49,7 +49,7 @@ echo "Building unprivileged MDX..."
 mkdir -p build/unpriv
 LANG=C.utf8 "$ASCIIDOCTOR_MDX" \
   "${MDX_OPTS[@]}" "${MDX_REQUIRES[@]}" \
-  -a imagesdir=images \
+  -a "imagesdir=$MANUAL_DIR/src/images" \
   -a mdx-sidebar-dir=unprivileged \
   -D build/unpriv \
   "$WRAP_DIR/unpriv.adoc"
@@ -58,7 +58,7 @@ echo "Building privileged MDX..."
 mkdir -p build/priv
 LANG=C.utf8 "$ASCIIDOCTOR_MDX" \
   "${MDX_OPTS[@]}" "${MDX_REQUIRES[@]}" \
-  -a 'imagesdir=../images' \
+  -a "imagesdir=$MANUAL_DIR/src/images" \
   -a mdx-sidebar-dir=privileged \
   -D build/priv \
   "$WRAP_DIR/priv.adoc"
