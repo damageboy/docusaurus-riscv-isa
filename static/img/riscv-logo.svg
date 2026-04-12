@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 108">
+  <!--
+    RISC-V navbar logo — white+gold variant.
+    Original logo: navy R shape + gold V chevron.
+    Here navy → white so it reads on the dark (#011e41) navbar.
+  -->
+
+  <!-- Gold V chevron (behind the R) -->
+  <path d="M36 2 L98 2 L98 62 L68 104 L36 62 Z" fill="#fdb515"/>
+
+  <!--
+    White R letterform.
+    Uses fill-rule="evenodd": the inner bowl path punches a transparent
+    hole through the white R, revealing the gold V behind it.
+  -->
+  <path
+    fill-rule="evenodd"
+    fill="white"
+    d="M5 5 L5 95 L22 95 L22 55 L50 55 L64 95 L83 95 L66 55
+       Q90 50 90 28 Q90 5 60 5 Z
+       M22 14 L56 14 Q74 14 74 28 Q74 40 56 40 L22 40 Z"
+  />
+</svg>
