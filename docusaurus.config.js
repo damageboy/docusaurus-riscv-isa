@@ -42,6 +42,8 @@ const config = {
   },
 
   markdown: {
+    // {#id} heading syntax requires this when future.v4 is enabled
+    mdx1Compat: { headingIds: true },
     remarkRehypeOptions: {
       handlers: {
         [TYPE_TABLE]: mdast2hastGridTablesHandler(),
@@ -68,6 +70,18 @@ const config = {
         theme: {
           customCss: './src/css/custom.css',
         },
+      }),
+    ],
+  ],
+
+  themes: [
+    [
+      require.resolve('@easyops-cn/docusaurus-search-local'),
+      /** @type {import("@easyops-cn/docusaurus-search-local").PluginOptions} */
+      ({
+        hashed: true,
+        language: ['en'],
+        docsRouteBasePath: ['docs'],
       }),
     ],
   ],
