@@ -27,9 +27,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: damageboy/asciidoctor-mdx
-          # Requires a PAT with contents:read for the private repo stored as
-          # Settings → Secrets → Actions → PRIVATE_REPO_TOKEN
-          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
           path: asciidoctor-mdx-src
 
       - name: Set up Ruby 3.4
