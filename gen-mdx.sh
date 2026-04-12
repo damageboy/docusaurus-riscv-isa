@@ -2,7 +2,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-MANUAL_DIR="$(cd "$SCRIPT_DIR/../riscv-isa-manual" && pwd)"
+MANUAL_DIR="${MANUAL_DIR:-$(cd "$SCRIPT_DIR/../riscv-isa-manual" && pwd)}"
 ASCIIDOCTOR_MDX="${ASCIIDOCTOR_MDX:-/home/dmg/projects/asciidoctor/wrappers/asciidoctor-mdx}"
 
 # Create temp wrapper adoc files that prepend symbols.adoc to each volume.

@@ -1,0 +1,91 @@
+name: Build & Deploy
+
+on:
+  push:
+    branches: [master]
+  schedule:
+    # Daily at 02:00 UTC — picks up upstream riscv-isa-manual changes
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout site repo
+        uses: actions/checkout@v4
+
+      - name: Checkout riscv-isa-manual
+        uses: actions/checkout@v4
+        with:
+          repository: riscv/riscv-isa-manual
+          path: riscv-isa-manual
+          submodules: recursive
+
+      - name: Checkout asciidoctor-mdx
+        uses: actions/checkout@v4
+        with:
+          repository: damageboy/asciidoctor-mdx
+          # Requires a PAT with contents:read for the private repo stored as
+          # Settings → Secrets → Actions → PRIVATE_REPO_TOKEN
+          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
+          path: asciidoctor-mdx-src
+
+      - name: Set up Ruby 3.4
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+
+      - name: Install gems
+        run: |
+          gem install asciidoctor asciidoctor-bibtex asciidoctor-lists asciidoctor-sail
+          cd asciidoctor-mdx-src
+          gem build asciidoctor-mdx.gemspec
+          gem install asciidoctor-mdx-*.gem
+
+      - name: Create asciidoctor-mdx wrapper
+        run: |
+          mkdir -p "$HOME/bin"
+          printf '#!/usr/bin/env bash\nexec asciidoctor --backend mdx --require asciidoctor-mdx "$@"\n' \
+            > "$HOME/bin/asciidoctor-mdx"
+          chmod +x "$HOME/bin/asciidoctor-mdx"
+          echo "$HOME/bin" >> "$GITHUB_PATH"
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install JS dependencies
+        run: bun install
+
+      - name: Generate MDX docs
+        run: ./gen-mdx.sh
+        env:
+          MANUAL_DIR: ${{ github.workspace }}/riscv-isa-manual
+          ASCIIDOCTOR_MDX: ${{ env.HOME }}/bin/asciidoctor-mdx
+
+      - name: Build Docusaurus site
+        run: bun run build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/master'
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
