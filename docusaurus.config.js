@@ -4,10 +4,7 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import remarkGridtables from '@adobe/remark-gridtables';
 import { TYPE_TABLE, mdast2hastGridTablesHandler } from '@adobe/mdast-util-gridtables';
-import { createRequire } from 'module';
-
-const require = createRequire(import.meta.url);
-const remarkKroki = require('remark-kroki-plugin');
+import remarkKroki from 'remark-kroki-plugin';
 
 const krokiOptions = (id) => ({
   krokiBase: 'https://kroki.io',
@@ -55,6 +52,8 @@ const config = {
     defaultLocale: 'en',
     locales: ['en'],
   },
+
+  plugins: ['docusaurus-plugin-image-zoom'],
 
   presets: [
     [
@@ -119,6 +118,13 @@ const config = {
             label: 'Privileged',
           },
         ],
+      },
+      zoom: {
+        selector: '.markdown img',
+        background: {
+          light: 'rgb(255, 255, 255)',
+          dark: 'rgb(50, 50, 50)',
+        },
       },
       prism: {
         theme: prismThemes.github,

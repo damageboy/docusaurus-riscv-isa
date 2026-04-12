@@ -74,4 +74,4 @@ echo "Copying images..."
 mkdir -p "$SCRIPT_DIR/static/img/riscv-isa"
 cp -r "$MANUAL_DIR/src/images/." "$SCRIPT_DIR/static/img/riscv-isa/"
 
-echo "Done. Run 'npm run build' or 'npm run start' to rebuild the site."
+echo "Done. Run 'bun run build' or 'bun run start' to rebuild the site."
