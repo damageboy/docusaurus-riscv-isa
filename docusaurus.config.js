@@ -36,6 +36,11 @@ const config = {
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
 
+   future: {
+    v4: true, // opt-in for Docusaurus v4 planned changes
+    faster: true, // turns Docusaurus Faster on globally
+  },
+
   markdown: {
     remarkRehypeOptions: {
       handlers: {
