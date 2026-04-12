@@ -27,7 +27,7 @@ const config = {
   tagline: 'The RISC-V Instruction Set Architecture Manual',
   favicon: 'img/favicon.ico',
 
-  url: 'https://riscv.org',
+  url: 'https://riscv.houmus.org',
   baseUrl: '/',
 
   onBrokenLinks: 'warn',
