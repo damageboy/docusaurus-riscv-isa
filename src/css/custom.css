@@ -1,30 +1,39 @@
+/* src/css/custom.css */
+
 /**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
+ * RISC-V brand theme for Docusaurus.
+ * Primary palette: amber/gold derived from riscv.org (#fdb515).
+ * Light mode uses #c48400 (darker) for WCAG contrast on white backgrounds.
+ * Dark mode uses #fdb515 (bright) for contrast on dark backgrounds.
+ * Navbar: navy #011e41, matching riscv.org header.
  */
 
-/* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
+  --ifm-color-primary: #c48400;
+  --ifm-color-primary-dark: #ad7400;
+  --ifm-color-primary-darker: #996600;
+  --ifm-color-primary-darkest: #7a5200;
+  --ifm-color-primary-light: #db9200;
+  --ifm-color-primary-lighter: #f0a000;
+  --ifm-color-primary-lightest: #ffad00;
+
+  --ifm-navbar-background-color: #011e41;
+  --ifm-navbar-link-color: #ffffff;
+  --ifm-navbar-link-hover-color: #fdb515;
+  --ifm-navbar-link-active-color: #fdb515;
+  --ifm-navbar-shadow: none;
+
   --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --docusaurus-highlighted-code-line-bg: rgba(196, 132, 0, 0.15);
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --ifm-color-primary: #fdb515;
+  --ifm-color-primary-dark: #e0a012;
+  --ifm-color-primary-darker: #c98f10;
+  --ifm-color-primary-darkest: #9e700d;
+  --ifm-color-primary-light: #fec130;
+  --ifm-color-primary-lighter: #fecc4d;
+  --ifm-color-primary-lightest: #fed878;
+  --docusaurus-highlighted-code-line-bg: rgba(253, 181, 21, 0.2);
 }
