@@ -36,7 +36,7 @@ jobs:
 
       - name: Install gems
         run: |
-          gem install asciidoctor asciidoctor-bibtex asciidoctor-lists asciidoctor-sail
+          gem install asciidoctor rouge asciidoctor-bibtex asciidoctor-lists asciidoctor-sail
           cd asciidoctor-mdx-src
           gem build asciidoctor-mdx.gemspec
           gem install asciidoctor-mdx-*.gem
