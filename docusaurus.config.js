@@ -3,6 +3,7 @@ import { themes as prismThemes } from 'prism-react-renderer';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import remarkGridtables from '@adobe/remark-gridtables';
+import { TYPE_TABLE, mdast2hastGridTablesHandler } from '@adobe/mdast-util-gridtables';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
@@ -34,6 +35,14 @@ const config = {
 
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
+
+  markdown: {
+    remarkRehypeOptions: {
+      handlers: {
+        [TYPE_TABLE]: mdast2hastGridTablesHandler(),
+      },
+    },
+  },
 
   i18n: {
     defaultLocale: 'en',
@@ -71,6 +80,11 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
+        logo: {
+          alt: 'RISC-V',
+          src: 'img/riscv-logo.svg',
+          srcDark: 'img/riscv-logo.svg',
+        },
         title: 'RISC-V ISA Manual',
         items: [
           {
