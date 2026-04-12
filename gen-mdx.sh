@@ -26,6 +26,7 @@ DATE="$(date +%Y%m%d)"
 
 MDX_OPTS=(
   --trace
+  -a sectnums
   -a "revnumber=$DATE"
   -a 'revremark=DRAFT---NOT AN OFFICIAL RELEASE'
   -a docinfo=shared
