@@ -7,6 +7,11 @@
 # Generated files
 .docusaurus
 .cache-loader
+/docs/privileged/*.mdx
+/docs/unprivileged/*.mdx
+
+# Kroki-fetched SVG cache (directory preserved via .gitkeep)
+/static/img/riscv-isa/kroki/*.svg
 
 # Misc
 .DS_Store
