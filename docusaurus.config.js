@@ -23,7 +23,7 @@ const krokiOptions = (id) => ({
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'RISC-V ISA Manual',
+  title: '(Unofficial) RISC-V ISA Manual',
   tagline: 'The RISC-V Instruction Set Architecture Manual',
   favicon: 'img/favicon.svg',
 
