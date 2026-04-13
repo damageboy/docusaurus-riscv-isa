@@ -10,6 +10,10 @@ const FeatureList = [
         This is an <strong>unofficial</strong> rendering of the{' '}
         <a href="https://github.com/riscv/riscv-isa-manual">RISC-V ISA Manual</a>.
         The authoritative source is the official RISC-V specification.
+        <br /><br />
+        <strong>Volume I</strong> — Unprivileged ISA ✓<br />
+        <strong>Volume II</strong> — Privileged Architecture ✓<br />
+        <strong>Volume III</strong> — Profiles &amp; Platforms — <em>not yet ported</em>
       </>
     ),
   },
