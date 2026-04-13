@@ -1,17 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 108">
-  <!-- Gold V chevron (background) -->
-  <path d="M36 2 L98 2 L98 62 L68 104 L36 62 Z" fill="#f3ab0d"/>
-
-  <!--
-    Navy R letterform.
-    fill-rule="evenodd": the inner bowl path punches a transparent
-    hole through the R, revealing the gold V chevron behind it.
-  -->
-  <path
-    fill-rule="evenodd"
-    fill="#283272"
-    d="M5 5 L5 95 L22 95 L22 55 L50 55 L64 95 L83 95 L66 55
-       Q90 50 90 28 Q90 5 60 5 Z
-       M22 14 L56 14 Q74 14 74 28 Q74 40 56 40 L22 40 Z"
-  />
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 108"><path fill="#f3ab0d" d="M36 2 L98 2 L98 62 L68 104 L36 62 Z"/><path fill="#283272" fill-rule="evenodd" d="M5 5 L5 95 L22 95 L22 55 L50 55 L64 95 L83 95 L66 55 Q90 50 90 28 Q90 5 60 5 Z M22 14 L56 14 Q74 14 74 28 Q74 40 56 40 L22 40 Z"/></svg>
