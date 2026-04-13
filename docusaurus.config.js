@@ -25,7 +25,7 @@ const krokiOptions = (id) => ({
 const config = {
   title: 'RISC-V ISA Manual',
   tagline: 'The RISC-V Instruction Set Architecture Manual',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.svg',
 
   url: 'https://riscv.houmus.org',
   baseUrl: '/',
