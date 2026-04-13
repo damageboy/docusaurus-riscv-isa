@@ -4,44 +4,41 @@ import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: 'Unofficial Web Rendering',
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        This is an <strong>unofficial</strong> rendering of the{' '}
+        <a href="https://github.com/riscv/riscv-isa-manual">RISC-V ISA Manual</a>.
+        The authoritative source is the official RISC-V specification.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: 'Full-Text Search',
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Every section of the Unprivileged and Privileged specs is indexed and
+        searchable. Press <kbd>/</kbd> or click the search bar to find any
+        instruction, CSR, or concept instantly.
       </>
     ),
   },
   {
-    title: 'Powered by React',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    title: 'Zoomable Diagrams',
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Instruction encodings, timing diagrams, and state machine figures can be
+        clicked to zoom in, making it easy to read dense register-layout
+        diagrams on any screen size.
       </>
     ),
   },
 ];
 
-function Feature({Svg, title, description}) {
+function Feature({ title, description }) {
   return (
     <div className={clsx('col col--4')}>
-      <div className="text--center">
-        <Svg className={styles.featureSvg} role="img" />
-      </div>
-      <div className="text--center padding-horiz--md">
+      <div className="text--center padding-horiz--md padding-vert--md">
         <Heading as="h3">{title}</Heading>
         <p>{description}</p>
       </div>
