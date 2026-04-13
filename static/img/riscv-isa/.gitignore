@@ -1,1 +1,5 @@
-stem*.svg
+*
+!.gitignore
+!kroki/
+!kroki/.gitignore
+!kroki/.gitkeep
