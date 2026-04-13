@@ -1,5 +1,7 @@
 # RISC-V ISA Manual — Docusaurus Site
 
+[![Build & Deploy](https://github.com/damageboy/docusaurus-riscv-isa/actions/workflows/build-deploy.yml/badge.svg)](https://github.com/damageboy/docusaurus-riscv-isa/actions/workflows/build-deploy.yml)
+
 A searchable, navigable web rendition of the [RISC-V ISA Manual](https://github.com/riscv/riscv-isa-manual), live at **https://riscv.houmus.org**.
 
 ## Tech Stack
