@@ -8,6 +8,7 @@
 .docusaurus
 .cache-loader
 /docs/*
+/static/built-manual-sha.txt
 
 # Misc
 .DS_Store

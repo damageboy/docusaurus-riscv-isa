@@ -9,7 +9,40 @@ on:
   workflow_dispatch:
 
 jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      manual_sha: ${{ steps.decide.outputs.manual_sha }}
+      should_build: ${{ steps.decide.outputs.should_build }}
+    steps:
+      - name: Decide whether to rebuild
+        id: decide
+        run: |
+          set -euo pipefail
+          UPSTREAM_SHA="$(git ls-remote https://github.com/riscv/riscv-isa-manual.git HEAD | cut -f1)"
+          echo "Upstream HEAD: $UPSTREAM_SHA"
+          echo "manual_sha=$UPSTREAM_SHA" >> "$GITHUB_OUTPUT"
+
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "Non-schedule trigger (${{ github.event_name }}) — always build"
+            echo "should_build=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          DEPLOYED_SHA="$(curl -fsSL https://riscv.houmus.org/built-manual-sha.txt 2>/dev/null | tr -d '[:space:]' || true)"
+          echo "Deployed stamp: ${DEPLOYED_SHA:-<none>}"
+
+          if [ -z "$DEPLOYED_SHA" ] || [ "$DEPLOYED_SHA" != "$UPSTREAM_SHA" ]; then
+            echo "Upstream changed (or no stamp) — rebuild"
+            echo "should_build=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "No upstream change — skip"
+            echo "should_build=false" >> "$GITHUB_OUTPUT"
+          fi
+
   build:
+    needs: check
+    if: needs.check.outputs.should_build == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -20,6 +53,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: riscv/riscv-isa-manual
+          ref: ${{ needs.check.outputs.manual_sha }}
           path: riscv-isa-manual
           submodules: recursive
 
@@ -92,6 +126,9 @@ jobs:
           ASCIIDOCTOR_MDX="$HOME/bin/asciidoctor-mdx" ./gen-mdx.sh
         env:
           MANUAL_DIR: ${{ github.workspace }}/riscv-isa-manual
+
+      - name: Stamp built riscv-isa-manual SHA
+        run: echo "${{ needs.check.outputs.manual_sha }}" > static/built-manual-sha.txt
 
       - name: Build Docusaurus site
         run: bun run build
