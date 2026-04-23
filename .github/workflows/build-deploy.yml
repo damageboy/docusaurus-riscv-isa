@@ -34,12 +34,23 @@ jobs:
         with:
           ruby-version: '3.4'
 
+      - name: Cache Ruby gems
+        uses: actions/cache@v4
+        with:
+          path: vendor/gems
+          key: gems-${{ runner.os }}-ruby3.4-${{ hashFiles('.github/workflows/build-deploy.yml') }}
+          restore-keys: gems-${{ runner.os }}-ruby3.4-
+
       - name: Install gems
         run: |
-          gem install asciidoctor rouge asciidoctor-bibtex asciidoctor-lists asciidoctor-sail
+          export GEM_HOME="$GITHUB_WORKSPACE/vendor/gems"
+          export PATH="$GEM_HOME/bin:$PATH"
+          echo "GEM_HOME=$GEM_HOME" >> "$GITHUB_ENV"
+          echo "$GEM_HOME/bin" >> "$GITHUB_PATH"
+          gem install --no-document asciidoctor rouge asciidoctor-bibtex asciidoctor-lists asciidoctor-sail
           cd asciidoctor-mdx-src
           gem build asciidoctor-mdx.gemspec
-          gem install asciidoctor-mdx-*.gem
+          gem install --no-document asciidoctor-mdx-*.gem
 
       - name: Restore kroki diagram cache
         uses: actions/cache@v4
@@ -51,8 +62,26 @@ jobs:
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
 
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node_modules-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: node_modules-${{ runner.os }}-
+
       - name: Install JS dependencies
-        run: bun install
+        run: bun install --frozen-lockfile
+
+      - name: Cache Docusaurus build cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            .docusaurus
+            node_modules/.cache
+          key: docusaurus-${{ runner.os }}-${{ hashFiles('docusaurus.config.js', 'sidebars.js', 'bun.lock') }}-${{ github.sha }}
+          restore-keys: |
+            docusaurus-${{ runner.os }}-${{ hashFiles('docusaurus.config.js', 'sidebars.js', 'bun.lock') }}-
+            docusaurus-${{ runner.os }}-
 
       - name: Generate MDX docs
         run: |
