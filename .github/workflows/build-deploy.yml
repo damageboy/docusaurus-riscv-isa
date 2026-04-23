@@ -56,6 +56,23 @@ jobs:
           ref: ${{ needs.check.outputs.manual_sha }}
           path: riscv-isa-manual
           submodules: recursive
+          fetch-tags: true
+
+      - name: Resolve manual version
+        working-directory: riscv-isa-manual
+        run: |
+          set -euo pipefail
+          FULL_SHA=$(git rev-parse HEAD)
+          if TAG=$(git describe --tags --exact-match HEAD 2>/dev/null); then
+            VER="$TAG"
+            URL="https://github.com/riscv/riscv-isa-manual/releases/tag/$TAG"
+          else
+            VER=$(git rev-parse --short HEAD)
+            URL="https://github.com/riscv/riscv-isa-manual/commit/$FULL_SHA"
+          fi
+          echo "Manual version: $VER ($URL)"
+          echo "MANUAL_VERSION=$VER" >> "$GITHUB_ENV"
+          echo "MANUAL_VERSION_URL=$URL" >> "$GITHUB_ENV"
 
       - name: Checkout asciidoctor-mdx
         uses: actions/checkout@v4

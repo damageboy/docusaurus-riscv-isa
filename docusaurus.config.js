@@ -21,6 +21,9 @@ const krokiOptions = (id) => ({
   verbose: false,
 });
 
+const manualVersion = process.env.MANUAL_VERSION || '';
+const manualVersionUrl = process.env.MANUAL_VERSION_URL || 'https://github.com/riscv/riscv-isa-manual';
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: '(Unofficial) RISC-V ISA Manual',
@@ -117,6 +120,12 @@ const config = {
             position: 'left',
             label: 'Privileged',
           },
+          ...(manualVersion ? [{
+            href: manualVersionUrl,
+            label: `manual: ${manualVersion}`,
+            position: 'right',
+            className: 'navbar-manual-version',
+          }] : []),
           {
             href: 'https://github.com/damageboy/docusaurus-riscv-isa',
             position: 'right',
