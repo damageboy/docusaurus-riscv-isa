@@ -117,6 +117,12 @@ const config = {
             position: 'left',
             label: 'Privileged',
           },
+          {
+            href: 'https://github.com/damageboy/docusaurus-riscv-isa',
+            position: 'right',
+            className: 'header-github-link',
+            'aria-label': 'GitHub repository',
+          },
         ],
       },
       zoom: {
