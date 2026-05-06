@@ -2,17 +2,17 @@
 set -euo pipefail
 
 resolve_dir() {
-  local var_name="$1"
-  local default_path="$2"
-  local path="${!var_name:-$default_path}"
+	local var_name="$1"
+	local default_path="$2"
+	local path="${!var_name:-$default_path}"
 
-  if [ ! -d "$path" ]; then
-    echo "Missing $var_name directory: $path" >&2
-    echo "Clone it as a sibling repo or set $var_name to an existing checkout." >&2
-    exit 1
-  fi
+	if [ ! -d "$path" ]; then
+		echo "Missing $var_name directory: $path" >&2
+		echo "Clone it as a sibling repo or set $var_name to an existing checkout." >&2
+		exit 1
+	fi
 
-  cd "$path" && pwd
+	cd "$path" && pwd
 }
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -24,10 +24,10 @@ TRACE_SPEC_DIR="$(resolve_dir TRACE_SPEC_DIR "$SCRIPT_DIR/../riscv-trace-spec")"
 ASCIIDOCTOR_MDX="${ASCIIDOCTOR_MDX:-/home/dmg/projects/asciidoctor/wrappers/asciidoctor-mdx}"
 
 if [ -z "${ASDF_RUBY_VERSION:-}" ] && [ -f "$MANUAL_DIR/.tool-versions" ]; then
-  RUBY_VERSION="$(awk '$1 == "ruby" { print $2; exit }' "$MANUAL_DIR/.tool-versions")"
-  if [ -n "$RUBY_VERSION" ]; then
-    export ASDF_RUBY_VERSION="$RUBY_VERSION"
-  fi
+	RUBY_VERSION="$(awk '$1 == "ruby" { print $2; exit }' "$MANUAL_DIR/.tool-versions")"
+	if [ -n "$RUBY_VERSION" ]; then
+		export ASDF_RUBY_VERSION="$RUBY_VERSION"
+	fi
 fi
 
 # Create temp wrapper adoc files that prepend symbols.adoc to each volume.
@@ -37,12 +37,12 @@ fi
 WRAP_DIR="$(mktemp -d)"
 trap 'rm -rf "$WRAP_DIR"' EXIT
 
-cat > "$WRAP_DIR/unpriv.adoc" <<EOF
+cat >"$WRAP_DIR/unpriv.adoc" <<EOF
 include::$MANUAL_DIR/src/symbols.adoc[]
 include::$MANUAL_DIR/src/unpriv.adoc[]
 EOF
 
-cat > "$WRAP_DIR/priv.adoc" <<EOF
+cat >"$WRAP_DIR/priv.adoc" <<EOF
 include::$MANUAL_DIR/src/symbols.adoc[]
 include::$MANUAL_DIR/src/priv/priv.adoc[]
 EOF
@@ -50,72 +50,72 @@ EOF
 DATE="$(date +%Y%m%d)"
 
 COMMON_MDX_OPTS=(
-  --trace
-  -a sectnums
-  -a "revnumber=$DATE"
-  -a 'revremark=DRAFT---NOT AN OFFICIAL RELEASE'
-  -a docinfo=shared
+	--trace
+	-a sectnums
+	-a "revnumber=$DATE"
+	-a 'revremark=DRAFT---NOT AN OFFICIAL RELEASE'
+	-a docinfo=shared
 )
 
 ISA_MDX_OPTS=(
-  "${COMMON_MDX_OPTS[@]}"
-  -a "bibtex-file=$MANUAL_DIR/src/resources/riscv-spec.bib"
-  -a "github-edit-url-base=https://github.com/riscv/riscv-isa-manual/blob/main"
-  -a "github-local-root=$MANUAL_DIR"
-  -a 'mdx-images-url=/img/riscv-isa/'
-  -a "mdx-images-root=$MANUAL_DIR/src/images"
+	"${COMMON_MDX_OPTS[@]}"
+	-a "bibtex-file=$MANUAL_DIR/src/resources/riscv-spec.bib"
+	-a "github-edit-url-base=https://github.com/riscv/riscv-isa-manual/blob/main"
+	-a "github-local-root=$MANUAL_DIR"
+	-a 'mdx-images-url=/img/riscv-isa/'
+	-a "mdx-images-root=$MANUAL_DIR/src/images"
 )
 
 MDX_REQUIRES=(
-  --require=asciidoctor-bibtex
-  --require=asciidoctor-lists
-  --require=asciidoctor-sail
+	--require=asciidoctor-bibtex
+	--require=asciidoctor-lists
+	--require=asciidoctor-sail
 )
 
 copy_generated_docs() {
-  local source_build_dir="$1"
-  local docs_dir="$2"
+	local source_build_dir="$1"
+	local docs_dir="$2"
 
-  mkdir -p "$docs_dir"
-  rm -f "$docs_dir"/*.mdx "$docs_dir/sidebar.json"
-  cp "$source_build_dir"/*.mdx "$docs_dir/"
-  cp "$source_build_dir/sidebar.json" "$docs_dir/"
+	mkdir -p "$docs_dir"
+	rm -f "$docs_dir"/*.mdx "$docs_dir/sidebar.json"
+	cp "$source_build_dir"/*.mdx "$docs_dir/"
+	cp "$source_build_dir/sidebar.json" "$docs_dir/"
 }
 
 copy_images() {
-  local source_dir="$1"
-  local target_dir="$2"
+	local source_dir="$1"
+	local target_dir="$2"
 
-  mkdir -p "$target_dir"
-  if [ -d "$source_dir" ]; then
-    (
-      shopt -s dotglob nullglob
-      for source_path in "$source_dir"/*; do
-        if [ "$(basename "$source_path")" = ".gitignore" ]; then
-          continue
-        fi
-        cp -r "$source_path" "$target_dir/"
-      done
-    )
-  fi
+	mkdir -p "$target_dir"
+	if [ -d "$source_dir" ]; then
+		(
+			shopt -s dotglob nullglob
+			for source_path in "$source_dir"/*; do
+				if [ "$(basename "$source_path")" = ".gitignore" ]; then
+					continue
+				fi
+				cp -r "$source_path" "$target_dir/"
+			done
+		)
+	fi
 }
 
 normalize_empty_doc_id() {
-  local build_dir="$1"
-  local docs_subdir="$2"
-  local hidden_doc="$build_dir/.mdx"
-  local index_doc="$build_dir/index.mdx"
-  local sidebar_file="$build_dir/sidebar.json"
-  local empty_id="$docs_subdir/"
-  local index_id="$docs_subdir/index"
+	local build_dir="$1"
+	local docs_subdir="$2"
+	local hidden_doc="$build_dir/.mdx"
+	local index_doc="$build_dir/index.mdx"
+	local sidebar_file="$build_dir/sidebar.json"
+	local empty_id="$docs_subdir/"
+	local index_id="$docs_subdir/index"
 
-  if [ ! -f "$hidden_doc" ]; then
-    return 0
-  fi
+	if [ ! -f "$hidden_doc" ]; then
+		return 0
+	fi
 
-  mv "$hidden_doc" "$index_doc"
+	mv "$hidden_doc" "$index_doc"
 
-  python3 - "$index_doc" "$sidebar_file" "$empty_id" "$index_id" <<'PY'
+	python3 - "$index_doc" "$sidebar_file" "$empty_id" "$index_id" <<'PY'
 import json
 import sys
 from pathlib import Path
@@ -166,49 +166,49 @@ PY
 }
 
 build_spec_mdx() {
-  local repo_dir="$1"
-  local root_doc="$2"
-  local build_subdir="$3"
-  local docs_subdir="$4"
-  local sidebar_dir="$5"
-  local image_url="$6"
-  local image_root="$7"
-  local edit_url_base="$8"
-  shift 8
+	local repo_dir="$1"
+	local root_doc="$2"
+	local build_subdir="$3"
+	local docs_subdir="$4"
+	local sidebar_dir="$5"
+	local image_url="$6"
+	local image_root="$7"
+	local edit_url_base="$8"
+	shift 8
 
-  echo "Building $docs_subdir MDX..."
-  mkdir -p "$repo_dir/build/$build_subdir"
-  (
-    cd "$repo_dir"
-    LANG=C.utf8 "$ASCIIDOCTOR_MDX" \
-      "${COMMON_MDX_OPTS[@]}" \
-      -a "github-edit-url-base=$edit_url_base" \
-      -a "github-local-root=$repo_dir" \
-      -a "mdx-images-url=$image_url" \
-      -a "mdx-images-root=$image_root" \
-      -a "mdx-sidebar-dir=$sidebar_dir" \
-      "$@" \
-      -D "build/$build_subdir" \
-      "$root_doc"
-  )
+	echo "Building $docs_subdir MDX..."
+	mkdir -p "$repo_dir/build/$build_subdir"
+	(
+		cd "$repo_dir"
+		LANG=C.utf8 "$ASCIIDOCTOR_MDX" \
+			"${COMMON_MDX_OPTS[@]}" \
+			-a "github-edit-url-base=$edit_url_base" \
+			-a "github-local-root=$repo_dir" \
+			-a "mdx-images-url=$image_url" \
+			-a "mdx-images-root=$image_root" \
+			-a "mdx-sidebar-dir=$sidebar_dir" \
+			"$@" \
+			-D "build/$build_subdir" \
+			"$root_doc"
+	)
 
-  normalize_empty_doc_id "$repo_dir/build/$build_subdir" "$docs_subdir"
-  copy_generated_docs "$repo_dir/build/$build_subdir" "$SCRIPT_DIR/docs/$docs_subdir"
+	normalize_empty_doc_id "$repo_dir/build/$build_subdir" "$docs_subdir"
+	copy_generated_docs "$repo_dir/build/$build_subdir" "$SCRIPT_DIR/docs/$docs_subdir"
 }
 
 prepare_sbi_revision() {
-  local snippet_dir="$SBI_DOC_DIR/autogenerated"
-  local commit_date
-  local git_version
+	local snippet_dir="$SBI_DOC_DIR/autogenerated"
+	local commit_date
+	local git_version
 
-  commit_date="$(git -C "$SBI_DOC_DIR" show -s --format=%ci | cut -d ' ' -f 1)"
-  git_version="$(git -C "$SBI_DOC_DIR" describe --tags --always 2>/dev/null || git -C "$SBI_DOC_DIR" rev-parse --short HEAD)"
+	commit_date="$(git -C "$SBI_DOC_DIR" show -s --format=%ci | cut -d ' ' -f 1)"
+	git_version="$(git -C "$SBI_DOC_DIR" describe --tags --always 2>/dev/null || git -C "$SBI_DOC_DIR" rev-parse --short HEAD)"
 
-  mkdir -p "$snippet_dir"
-  {
-    echo ":revdate: $commit_date"
-    echo ":revnumber: $git_version"
-  } > "$snippet_dir/revision.adoc-snippet"
+	mkdir -p "$snippet_dir"
+	{
+		echo ":revdate: $commit_date"
+		echo ":revnumber: $git_version"
+	} >"$snippet_dir/revision.adoc-snippet"
 }
 
 # Run from MANUAL_DIR so the .tool-versions Ruby version is picked up by asdf.
@@ -217,73 +217,73 @@ cd "$MANUAL_DIR"
 echo "Building unprivileged MDX..."
 mkdir -p build/unpriv
 LANG=C.utf8 "$ASCIIDOCTOR_MDX" \
-  "${ISA_MDX_OPTS[@]}" "${MDX_REQUIRES[@]}" \
-  -a "imagesdir=$MANUAL_DIR/src/images" \
-  -a mdx-sidebar-dir=unprivileged \
-  -D build/unpriv \
-  "$WRAP_DIR/unpriv.adoc"
+	"${ISA_MDX_OPTS[@]}" "${MDX_REQUIRES[@]}" \
+	-a "imagesdir=$MANUAL_DIR/src/images" \
+	-a mdx-sidebar-dir=unprivileged \
+	-D build/unpriv \
+	"$WRAP_DIR/unpriv.adoc"
 
 echo "Building privileged MDX..."
 mkdir -p build/priv
 LANG=C.utf8 "$ASCIIDOCTOR_MDX" \
-  "${ISA_MDX_OPTS[@]}" "${MDX_REQUIRES[@]}" \
-  -a "imagesdir=$MANUAL_DIR/src/images" \
-  -a mdx-sidebar-dir=privileged \
-  -D build/priv \
-  "$WRAP_DIR/priv.adoc"
+	"${ISA_MDX_OPTS[@]}" "${MDX_REQUIRES[@]}" \
+	-a "imagesdir=$MANUAL_DIR/src/images" \
+	-a mdx-sidebar-dir=privileged \
+	-D build/priv \
+	"$WRAP_DIR/priv.adoc"
 
 echo "Copying ISA docs to Docusaurus..."
 copy_generated_docs "$MANUAL_DIR/build/unpriv" "$SCRIPT_DIR/docs/unprivileged"
 copy_generated_docs "$MANUAL_DIR/build/priv" "$SCRIPT_DIR/docs/privileged"
 
 build_spec_mdx \
-  "$ASM_MANUAL_DIR" \
-  "src/riscv-asm.adoc" \
-  "asm-manual" \
-  "asm-manual" \
-  "asm-manual" \
-  "/img/riscv-asm-manual/" \
-  "$ASM_MANUAL_DIR/docs-resources/images" \
-  "https://github.com/riscv-non-isa/riscv-asm-manual/blob/main" \
-  --require=asciidoctor-lists
+	"$ASM_MANUAL_DIR" \
+	"src/riscv-asm.adoc" \
+	"asm-manual" \
+	"asm-manual" \
+	"asm-manual" \
+	"/img/riscv-asm-manual/" \
+	"$ASM_MANUAL_DIR/docs-resources/images" \
+	"https://github.com/riscv-non-isa/riscv-asm-manual/blob/main" \
+	--require=asciidoctor-lists
 
 prepare_sbi_revision
 build_spec_mdx \
-  "$SBI_DOC_DIR" \
-  "riscv-sbi.adoc" \
-  "sbi" \
-  "sbi" \
-  "sbi" \
-  "/img/riscv-sbi-doc/" \
-  "$SBI_DOC_DIR/images" \
-  "https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master" \
-  -a "bibtex-file=$SBI_DOC_DIR/src/references.bib" \
-  -a "imagesdir=$SBI_DOC_DIR" \
-  --require=asciidoctor-bibtex
+	"$SBI_DOC_DIR" \
+	"riscv-sbi.adoc" \
+	"sbi" \
+	"sbi" \
+	"sbi" \
+	"/img/riscv-sbi-doc/" \
+	"$SBI_DOC_DIR/images" \
+	"https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master" \
+	-a "bibtex-file=$SBI_DOC_DIR/src/references.bib" \
+	-a "imagesdir=$SBI_DOC_DIR" \
+	--require=asciidoctor-bibtex
 
 build_spec_mdx \
-  "$IOMMU_DIR" \
-  "src/riscv-iommu.adoc" \
-  "iommu" \
-  "iommu" \
-  "iommu" \
-  "/img/riscv-iommu/" \
-  "$IOMMU_DIR/src/images" \
-  "https://github.com/riscv-non-isa/riscv-iommu/blob/main" \
-  -a "bibtex-file=$IOMMU_DIR/src/iommu.bib" \
-  -a "imagesdir=$IOMMU_DIR/src" \
-  --require=asciidoctor-bibtex \
-  --require=asciidoctor-lists
+	"$IOMMU_DIR" \
+	"src/riscv-iommu.adoc" \
+	"iommu" \
+	"iommu" \
+	"iommu" \
+	"/img/riscv-iommu/" \
+	"$IOMMU_DIR/src/images" \
+	"https://github.com/riscv-non-isa/riscv-iommu/blob/main" \
+	-a "bibtex-file=$IOMMU_DIR/src/iommu.bib" \
+	-a "imagesdir=$IOMMU_DIR/src" \
+	--require=asciidoctor-bibtex \
+	--require=asciidoctor-lists
 
 build_spec_mdx \
-  "$TRACE_SPEC_DIR" \
-  "header.adoc" \
-  "trace" \
-  "trace" \
-  "trace" \
-  "/img/riscv-trace-spec/" \
-  "$TRACE_SPEC_DIR/images" \
-  "https://github.com/riscv-non-isa/riscv-trace-spec/blob/main"
+	"$TRACE_SPEC_DIR" \
+	"header.adoc" \
+	"trace" \
+	"trace" \
+	"trace" \
+	"/img/riscv-trace-spec/" \
+	"$TRACE_SPEC_DIR/images" \
+	"https://github.com/riscv-non-isa/riscv-trace-spec/blob/main"
 
 echo "Copying images..."
 copy_images "$MANUAL_DIR/src/images" "$SCRIPT_DIR/static/img/riscv-isa"
