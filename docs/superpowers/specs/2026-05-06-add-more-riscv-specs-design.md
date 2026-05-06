@@ -19,17 +19,17 @@ This matches the current unprivileged, privileged, Assembly, SBI, IOMMU, and Tra
 
 Add two source directory variables:
 
-| Env var | Default |
-|---|---|
-| `SERVER_PLATFORM_DIR` | `../riscv-server-platform` |
-| `CTR_DIR` | `../riscv-control-transfer-records` |
+| Env var               | Default                             |
+| --------------------- | ----------------------------------- |
+| `SERVER_PLATFORM_DIR` | `../riscv-server-platform`          |
+| `CTR_DIR`             | `../riscv-control-transfer-records` |
 
 Known source roots:
 
-| Slug | Root AsciiDoc | Extra handling |
-|---|---|---|
-| `server-platform` | `server_platform_header.adoc` | `asciidoctor-bibtex`, `server_platform.bib`, `imagesdir=$SERVER_PLATFORM_DIR` |
-| `control-transfer-records` | `header.adoc` | `asciidoctor-bibtex`, `example.bib`, `imagesdir=$CTR_DIR/docs-resources/images` |
+| Slug                       | Root AsciiDoc                 | Extra handling                                                                  |
+| -------------------------- | ----------------------------- | ------------------------------------------------------------------------------- |
+| `server-platform`          | `server_platform_header.adoc` | `asciidoctor-bibtex`, `server_platform.bib`, `imagesdir=$SERVER_PLATFORM_DIR`   |
+| `control-transfer-records` | `header.adoc`                 | `asciidoctor-bibtex`, `example.bib`, `imagesdir=$CTR_DIR/docs-resources/images` |
 
 Image namespaces:
 
