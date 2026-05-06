@@ -178,6 +178,18 @@ const config = {
 						position: "left",
 						label: "Trace",
 					},
+					{
+						type: "docSidebar",
+						sidebarId: "serverPlatformSidebar",
+						position: "left",
+						label: "Server Platform",
+					},
+					{
+						type: "docSidebar",
+						sidebarId: "ctrSidebar",
+						position: "left",
+						label: "CTR",
+					},
 					...(manualVersion
 						? [
 								{

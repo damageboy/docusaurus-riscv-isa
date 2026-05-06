@@ -5,6 +5,8 @@ import asmManualData from "./docs/asm-manual/sidebar.json";
 import sbiData from "./docs/sbi/sidebar.json";
 import iommuData from "./docs/iommu/sidebar.json";
 import traceData from "./docs/trace/sidebar.json";
+import serverPlatformData from "./docs/server-platform/sidebar.json";
+import ctrData from "./docs/control-transfer-records/sidebar.json";
 
 const DOCS_BASE = "/docs";
 
@@ -45,4 +47,6 @@ export default {
 	sbiSidebar: withPrefix(sbiData),
 	iommuSidebar: withPrefix(iommuData),
 	traceSidebar: withPrefix(traceData),
+	serverPlatformSidebar: withPrefix(serverPlatformData),
+	ctrSidebar: withPrefix(ctrData),
 };
