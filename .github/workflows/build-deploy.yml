@@ -17,6 +17,8 @@ jobs:
       sbi_sha: ${{ steps.decide.outputs.sbi_sha }}
       iommu_sha: ${{ steps.decide.outputs.iommu_sha }}
       trace_sha: ${{ steps.decide.outputs.trace_sha }}
+      server_platform_sha: ${{ steps.decide.outputs.server_platform_sha }}
+      ctr_sha: ${{ steps.decide.outputs.ctr_sha }}
       upstream_stamp: ${{ steps.decide.outputs.upstream_stamp }}
       should_build: ${{ steps.decide.outputs.should_build }}
     steps:
@@ -34,7 +36,9 @@ jobs:
           SBI_SHA="$(get_sha https://github.com/riscv-non-isa/riscv-sbi-doc.git)"
           IOMMU_SHA="$(get_sha https://github.com/riscv-non-isa/riscv-iommu.git)"
           TRACE_SHA="$(get_sha https://github.com/riscv-non-isa/riscv-trace-spec.git)"
-          UPSTREAM_STAMP="riscv-isa-manual=$ISA_SHA;riscv-asm-manual=$ASM_SHA;riscv-sbi-doc=$SBI_SHA;riscv-iommu=$IOMMU_SHA;riscv-trace-spec=$TRACE_SHA"
+          SERVER_PLATFORM_SHA="$(get_sha https://github.com/riscv-non-isa/riscv-server-platform.git)"
+          CTR_SHA="$(get_sha https://github.com/riscv/riscv-control-transfer-records.git)"
+          UPSTREAM_STAMP="riscv-isa-manual=$ISA_SHA;riscv-asm-manual=$ASM_SHA;riscv-sbi-doc=$SBI_SHA;riscv-iommu=$IOMMU_SHA;riscv-trace-spec=$TRACE_SHA;riscv-server-platform=$SERVER_PLATFORM_SHA;riscv-control-transfer-records=$CTR_SHA"
 
           printf 'Upstream stamp: %s\n' "$UPSTREAM_STAMP"
           {
@@ -43,6 +47,8 @@ jobs:
             echo "sbi_sha=$SBI_SHA"
             echo "iommu_sha=$IOMMU_SHA"
             echo "trace_sha=$TRACE_SHA"
+            echo "server_platform_sha=$SERVER_PLATFORM_SHA"
+            echo "ctr_sha=$CTR_SHA"
             echo "upstream_stamp=$UPSTREAM_STAMP"
           } >> "$GITHUB_OUTPUT"
 
@@ -111,6 +117,22 @@ jobs:
           repository: riscv-non-isa/riscv-trace-spec
           ref: ${{ needs.check.outputs.trace_sha }}
           path: riscv-trace-spec
+          submodules: recursive
+
+      - name: Checkout riscv-server-platform
+        uses: actions/checkout@v4
+        with:
+          repository: riscv-non-isa/riscv-server-platform
+          ref: ${{ needs.check.outputs.server_platform_sha }}
+          path: riscv-server-platform
+          submodules: recursive
+
+      - name: Checkout riscv-control-transfer-records
+        uses: actions/checkout@v4
+        with:
+          repository: riscv/riscv-control-transfer-records
+          ref: ${{ needs.check.outputs.ctr_sha }}
+          path: riscv-control-transfer-records
           submodules: recursive
 
       - name: Resolve manual version
@@ -202,6 +224,8 @@ jobs:
           SBI_DOC_DIR: ${{ github.workspace }}/riscv-sbi-doc
           IOMMU_DIR: ${{ github.workspace }}/riscv-iommu
           TRACE_SPEC_DIR: ${{ github.workspace }}/riscv-trace-spec
+          SERVER_PLATFORM_DIR: ${{ github.workspace }}/riscv-server-platform
+          CTR_DIR: ${{ github.workspace }}/riscv-control-transfer-records
 
       - name: Stamp built upstream SHAs
         run: echo '${{ needs.check.outputs.upstream_stamp }}' > static/built-upstream-shas.txt
