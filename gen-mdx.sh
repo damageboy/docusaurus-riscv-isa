@@ -21,6 +21,8 @@ ASM_MANUAL_DIR="$(resolve_dir ASM_MANUAL_DIR "$SCRIPT_DIR/../riscv-asm-manual")"
 SBI_DOC_DIR="$(resolve_dir SBI_DOC_DIR "$SCRIPT_DIR/../riscv-sbi-doc")"
 IOMMU_DIR="$(resolve_dir IOMMU_DIR "$SCRIPT_DIR/../riscv-iommu")"
 TRACE_SPEC_DIR="$(resolve_dir TRACE_SPEC_DIR "$SCRIPT_DIR/../riscv-trace-spec")"
+SERVER_PLATFORM_DIR="$(resolve_dir SERVER_PLATFORM_DIR "$SCRIPT_DIR/../riscv-server-platform")"
+CTR_DIR="$(resolve_dir CTR_DIR "$SCRIPT_DIR/../riscv-control-transfer-records")"
 ASCIIDOCTOR_MDX="${ASCIIDOCTOR_MDX:-/home/dmg/projects/asciidoctor/wrappers/asciidoctor-mdx}"
 
 if [ -z "${ASDF_RUBY_VERSION:-}" ] && [ -f "$MANUAL_DIR/.tool-versions" ]; then
@@ -322,11 +324,39 @@ build_spec_mdx \
 	"$TRACE_SPEC_DIR/images" \
 	"https://github.com/riscv-non-isa/riscv-trace-spec/blob/main"
 
+build_spec_mdx \
+	"$SERVER_PLATFORM_DIR" \
+	"server_platform_header.adoc" \
+	"server-platform" \
+	"server-platform" \
+	"server-platform" \
+	"/img/riscv-server-platform/" \
+	"$SERVER_PLATFORM_DIR/images" \
+	"https://github.com/riscv-non-isa/riscv-server-platform/blob/main" \
+	-a "bibtex-file=$SERVER_PLATFORM_DIR/server_platform.bib" \
+	-a "imagesdir=$SERVER_PLATFORM_DIR/images" \
+	--require=asciidoctor-bibtex
+
+build_spec_mdx \
+	"$CTR_DIR" \
+	"header.adoc" \
+	"control-transfer-records" \
+	"control-transfer-records" \
+	"control-transfer-records" \
+	"/img/riscv-control-transfer-records/" \
+	"$CTR_DIR/docs-resources/images" \
+	"https://github.com/riscv/riscv-control-transfer-records/blob/main" \
+	-a "bibtex-file=$CTR_DIR/example.bib" \
+	-a "imagesdir=$CTR_DIR/docs-resources/images" \
+	--require=asciidoctor-bibtex
+
 echo "Copying images..."
 copy_images "$MANUAL_DIR/src/images" "$SCRIPT_DIR/static/img/riscv-isa"
 copy_images "$ASM_MANUAL_DIR/docs-resources/images" "$SCRIPT_DIR/static/img/riscv-asm-manual"
 copy_images "$SBI_DOC_DIR/images" "$SCRIPT_DIR/static/img/riscv-sbi-doc"
 copy_images "$IOMMU_DIR/src/images" "$SCRIPT_DIR/static/img/riscv-iommu"
 copy_images "$TRACE_SPEC_DIR/images" "$SCRIPT_DIR/static/img/riscv-trace-spec"
+copy_images "$SERVER_PLATFORM_DIR/images" "$SCRIPT_DIR/static/img/riscv-server-platform"
+copy_images "$CTR_DIR/docs-resources/images" "$SCRIPT_DIR/static/img/riscv-control-transfer-records"
 
 echo "Done. Run 'bun run build' or 'bun run start' to rebuild the site."
