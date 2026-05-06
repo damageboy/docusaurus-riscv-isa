@@ -100,6 +100,71 @@ copy_images() {
   fi
 }
 
+normalize_empty_doc_id() {
+  local build_dir="$1"
+  local docs_subdir="$2"
+  local hidden_doc="$build_dir/.mdx"
+  local index_doc="$build_dir/index.mdx"
+  local sidebar_file="$build_dir/sidebar.json"
+  local empty_id="$docs_subdir/"
+  local index_id="$docs_subdir/index"
+
+  if [ ! -f "$hidden_doc" ]; then
+    return 0
+  fi
+
+  mv "$hidden_doc" "$index_doc"
+
+  python3 - "$index_doc" "$sidebar_file" "$empty_id" "$index_id" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+index_path = Path(sys.argv[1])
+sidebar_path = Path(sys.argv[2])
+old_id = sys.argv[3]
+new_id = sys.argv[4]
+
+mdx_lines = index_path.read_text(encoding="utf-8").splitlines(keepends=True)
+if mdx_lines and mdx_lines[0].strip() == "---":
+    frontmatter_end = next(
+        (idx for idx, line in enumerate(mdx_lines[1:], start=1) if line.strip() == "---"),
+        None,
+    )
+    if frontmatter_end is not None:
+        for idx in range(1, frontmatter_end):
+            if mdx_lines[idx].startswith("id:"):
+                newline = "\n" if mdx_lines[idx].endswith("\n") else ""
+                mdx_lines[idx] = "id: index" + newline
+                break
+        else:
+            mdx_lines.insert(frontmatter_end, "id: index\n")
+        index_path.write_text("".join(mdx_lines), encoding="utf-8")
+
+with sidebar_path.open(encoding="utf-8") as sidebar_file:
+    sidebar = json.load(sidebar_file)
+
+
+def rewrite_ids(node):
+    if isinstance(node, dict):
+        for key, value in node.items():
+            if key == "id" and value == old_id:
+                node[key] = new_id
+            else:
+                rewrite_ids(value)
+    elif isinstance(node, list):
+        for item in node:
+            rewrite_ids(item)
+
+
+rewrite_ids(sidebar)
+
+with sidebar_path.open("w", encoding="utf-8") as sidebar_file:
+    json.dump(sidebar, sidebar_file, indent=2, ensure_ascii=False)
+    sidebar_file.write("\n")
+PY
+}
+
 build_spec_mdx() {
   local repo_dir="$1"
   local root_doc="$2"
@@ -127,6 +192,7 @@ build_spec_mdx() {
       "$root_doc"
   )
 
+  normalize_empty_doc_id "$repo_dir/build/$build_subdir" "$docs_subdir"
   copy_generated_docs "$repo_dir/build/$build_subdir" "$SCRIPT_DIR/docs/$docs_subdir"
 }
 

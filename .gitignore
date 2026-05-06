@@ -9,6 +9,10 @@
 .cache-loader
 /docs/*
 /static/built-manual-sha.txt
+/static/img/riscv-asm-manual/*
+/static/img/riscv-sbi-doc/*
+/static/img/riscv-iommu/*
+/static/img/riscv-trace-spec/*
 
 # Misc
 .DS_Store
