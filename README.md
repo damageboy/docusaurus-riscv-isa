@@ -6,18 +6,18 @@ A searchable, navigable web rendition of the [RISC-V ISA Manual](https://github.
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Static site generator | [Docusaurus 3.x](https://docusaurus.io/) (React, v4 compat mode) |
-| Package manager / bundler | [Bun](https://bun.sh/) |
-| Source format | AsciiDoc (upstream RISC-V ISA repo) |
-| AsciiDoc → MDX conversion | [asciidoctor-mdx](https://github.com/damageboy/asciidoctor-mdx) (custom Asciidoctor backend) |
-| Math rendering | [remark-math](https://github.com/remarkjs/remark-math) + [rehype-katex](https://github.com/remarkjs/remark-math/tree/main/packages/rehype-katex) |
-| Diagram rendering | [remark-kroki-plugin](https://github.com/show-docs/remark-kroki-plugin) → [kroki.io](https://kroki.io) |
-| Complex tables | [@adobe/remark-gridtables](https://github.com/adobe/remark-gridtables) |
-| Local search | [@easyops-cn/docusaurus-search-local](https://github.com/easyops-cn/docusaurus-search-local) |
-| Image zoom | [docusaurus-plugin-image-zoom](https://github.com/flexanalytics/plugin-image-zoom) |
-| CI / hosting | GitHub Actions → GitHub Pages |
+| Layer                     | Technology                                                                                                                                       |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Static site generator     | [Docusaurus 3.x](https://docusaurus.io/) (React, v4 compat mode)                                                                                 |
+| Package manager / bundler | [Bun](https://bun.sh/)                                                                                                                           |
+| Source format             | AsciiDoc (upstream RISC-V ISA repo)                                                                                                              |
+| AsciiDoc → MDX conversion | [asciidoctor-mdx](https://github.com/damageboy/asciidoctor-mdx) (custom Asciidoctor backend)                                                     |
+| Math rendering            | [remark-math](https://github.com/remarkjs/remark-math) + [rehype-katex](https://github.com/remarkjs/remark-math/tree/main/packages/rehype-katex) |
+| Diagram rendering         | [remark-kroki-plugin](https://github.com/show-docs/remark-kroki-plugin) → [kroki.io](https://kroki.io)                                           |
+| Complex tables            | [@adobe/remark-gridtables](https://github.com/adobe/remark-gridtables)                                                                           |
+| Local search              | [@easyops-cn/docusaurus-search-local](https://github.com/easyops-cn/docusaurus-search-local)                                                     |
+| Image zoom                | [docusaurus-plugin-image-zoom](https://github.com/flexanalytics/plugin-image-zoom)                                                               |
+| CI / hosting              | GitHub Actions → GitHub Pages                                                                                                                    |
 
 ## Content Pipeline
 
@@ -84,14 +84,14 @@ This converts both ISA volumes and selected non-ISA specs, copies images, and wr
 
 Environment variables:
 
-| Variable | Default | Description |
-|---|---|---|
-| `MANUAL_DIR` | `../riscv-isa-manual` | Path to the riscv-isa-manual checkout |
-| `ASM_MANUAL_DIR` | `../riscv-asm-manual` | Path to the RISC-V assembly manual checkout |
-| `SBI_DOC_DIR` | `../riscv-sbi-doc` | Path to the RISC-V SBI spec checkout |
-| `IOMMU_DIR` | `../riscv-iommu` | Path to the RISC-V IOMMU spec checkout |
-| `TRACE_SPEC_DIR` | `../riscv-trace-spec` | Path to the RISC-V trace spec checkout |
-| `ASCIIDOCTOR_MDX` | `~/projects/asciidoctor/wrappers/asciidoctor-mdx` | Path to the asciidoctor-mdx wrapper |
+| Variable          | Default                                           | Description                                 |
+| ----------------- | ------------------------------------------------- | ------------------------------------------- |
+| `MANUAL_DIR`      | `../riscv-isa-manual`                             | Path to the riscv-isa-manual checkout       |
+| `ASM_MANUAL_DIR`  | `../riscv-asm-manual`                             | Path to the RISC-V assembly manual checkout |
+| `SBI_DOC_DIR`     | `../riscv-sbi-doc`                                | Path to the RISC-V SBI spec checkout        |
+| `IOMMU_DIR`       | `../riscv-iommu`                                  | Path to the RISC-V IOMMU spec checkout      |
+| `TRACE_SPEC_DIR`  | `../riscv-trace-spec`                             | Path to the RISC-V trace spec checkout      |
+| `ASCIIDOCTOR_MDX` | `~/projects/asciidoctor/wrappers/asciidoctor-mdx` | Path to the asciidoctor-mdx wrapper         |
 
 ### 3. Build or develop
 
