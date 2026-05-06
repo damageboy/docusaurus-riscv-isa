@@ -27,14 +27,16 @@ riscv-asm-manual/src/riscv-asm.adoc
 riscv-sbi-doc/riscv-sbi.adoc
 riscv-iommu/src/riscv-iommu.adoc
 riscv-trace-spec/header.adoc
+riscv-server-platform/server_platform_header.adoc
+riscv-control-transfer-records/header.adoc
     └─ gen-mdx.sh
          └─ calls asciidoctor-mdx
-              ├─ docs/{unprivileged,privileged,asm-manual,sbi,iommu,trace}/*.mdx
-              ├─ docs/{unprivileged,privileged,asm-manual,sbi,iommu,trace}/sidebar.json
+              ├─ docs/{unprivileged,privileged,asm-manual,sbi,iommu,trace,server-platform,control-transfer-records}/*.mdx
+              ├─ docs/{unprivileged,privileged,asm-manual,sbi,iommu,trace,server-platform,control-transfer-records}/sidebar.json
               └─ static/img/<spec>/
 ```
 
-The generated MDX files and sidebar JSONs land in `docs/unprivileged/`, `docs/privileged/`, `docs/asm-manual/`, `docs/sbi/`, `docs/iommu/`, and `docs/trace/` (gitignored — never hand-edit them).
+The generated MDX files and sidebar JSONs land in `docs/unprivileged/`, `docs/privileged/`, `docs/asm-manual/`, `docs/sbi/`, `docs/iommu/`, `docs/trace/`, `docs/server-platform/`, and `docs/control-transfer-records/` (gitignored — never hand-edit them).
 
 ## Dependencies
 
@@ -48,6 +50,8 @@ git clone --recurse-submodules https://github.com/riscv-non-isa/riscv-asm-manual
 git clone --recurse-submodules https://github.com/riscv-non-isa/riscv-sbi-doc ../riscv-sbi-doc
 git clone --recurse-submodules https://github.com/riscv-non-isa/riscv-iommu ../riscv-iommu
 git clone --recurse-submodules https://github.com/riscv-non-isa/riscv-trace-spec ../riscv-trace-spec
+git clone --recurse-submodules https://github.com/riscv-non-isa/riscv-server-platform ../riscv-server-platform
+git clone --recurse-submodules https://github.com/riscv/riscv-control-transfer-records ../riscv-control-transfer-records
 ```
 
 Paths can be overridden with the environment variables below.
@@ -84,14 +88,16 @@ This converts both ISA volumes and selected non-ISA specs, copies images, and wr
 
 Environment variables:
 
-| Variable          | Default                                           | Description                                 |
-| ----------------- | ------------------------------------------------- | ------------------------------------------- |
-| `MANUAL_DIR`      | `../riscv-isa-manual`                             | Path to the riscv-isa-manual checkout       |
-| `ASM_MANUAL_DIR`  | `../riscv-asm-manual`                             | Path to the RISC-V assembly manual checkout |
-| `SBI_DOC_DIR`     | `../riscv-sbi-doc`                                | Path to the RISC-V SBI spec checkout        |
-| `IOMMU_DIR`       | `../riscv-iommu`                                  | Path to the RISC-V IOMMU spec checkout      |
-| `TRACE_SPEC_DIR`  | `../riscv-trace-spec`                             | Path to the RISC-V trace spec checkout      |
-| `ASCIIDOCTOR_MDX` | `~/projects/asciidoctor/wrappers/asciidoctor-mdx` | Path to the asciidoctor-mdx wrapper         |
+| Variable              | Default                                           | Description                                                |
+| --------------------- | ------------------------------------------------- | ---------------------------------------------------------- |
+| `MANUAL_DIR`          | `../riscv-isa-manual`                             | Path to the riscv-isa-manual checkout                      |
+| `ASM_MANUAL_DIR`      | `../riscv-asm-manual`                             | Path to the RISC-V assembly manual checkout                |
+| `SBI_DOC_DIR`         | `../riscv-sbi-doc`                                | Path to the RISC-V SBI spec checkout                       |
+| `IOMMU_DIR`           | `../riscv-iommu`                                  | Path to the RISC-V IOMMU spec checkout                     |
+| `TRACE_SPEC_DIR`      | `../riscv-trace-spec`                             | Path to the RISC-V trace spec checkout                     |
+| `SERVER_PLATFORM_DIR` | `../riscv-server-platform`                        | Path to the RISC-V Server Platform spec checkout           |
+| `CTR_DIR`             | `../riscv-control-transfer-records`               | Path to the RISC-V Control Transfer Records spec checkout  |
+| `ASCIIDOCTOR_MDX`     | `~/projects/asciidoctor/wrappers/asciidoctor-mdx` | Path to the asciidoctor-mdx wrapper                        |
 
 ### 3. Build or develop
 
