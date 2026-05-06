@@ -2,7 +2,7 @@
 
 [![Build & Deploy](https://github.com/damageboy/docusaurus-riscv-isa/actions/workflows/build-deploy.yml/badge.svg)](https://github.com/damageboy/docusaurus-riscv-isa/actions/workflows/build-deploy.yml)
 
-A searchable, navigable web rendition of the [RISC-V ISA Manual](https://github.com/riscv/riscv-isa-manual), live at **https://riscv.houmus.org**.
+A searchable, navigable web rendition of the [RISC-V ISA Manual](https://github.com/riscv/riscv-isa-manual) plus selected RISC-V non-ISA specifications, live at **https://riscv.houmus.org**.
 
 ## Tech Stack
 
@@ -21,33 +21,36 @@ A searchable, navigable web rendition of the [RISC-V ISA Manual](https://github.
 
 ## Content Pipeline
 
-```
+```text
 riscv-isa-manual/src/{unpriv,priv/priv}.adoc
+riscv-asm-manual/src/riscv-asm.adoc
+riscv-sbi-doc/riscv-sbi.adoc
+riscv-iommu/src/riscv-iommu.adoc
+riscv-trace-spec/header.adoc
     └─ gen-mdx.sh
-         ├─ wraps each volume with symbols.adoc (attribute definitions)
          └─ calls asciidoctor-mdx
-              │
-              ├─ riscv-isa-manual/build/{unpriv,priv}/*.mdx
-              ├─ riscv-isa-manual/build/{unpriv,priv}/sidebar.json
-              └─ static/img/riscv-isa/          (copied images)
-                   └─ kroki/                    (diagram SVG cache)
-    └─ Docusaurus build
-         └─ build/                              (static site output)
+              ├─ docs/{unprivileged,privileged,asm-manual,sbi,iommu,trace}/*.mdx
+              ├─ docs/{unprivileged,privileged,asm-manual,sbi,iommu,trace}/sidebar.json
+              └─ static/img/<spec>/
 ```
 
-The generated MDX files and sidebar JSONs land in `docs/unprivileged/` and `docs/privileged/` (gitignored — never hand-edit them).
+The generated MDX files and sidebar JSONs land in `docs/unprivileged/`, `docs/privileged/`, `docs/asm-manual/`, `docs/sbi/`, `docs/iommu/`, and `docs/trace/` (gitignored — never hand-edit them).
 
 ## Dependencies
 
 ### Upstream source
 
-The manual content comes from [riscv/riscv-isa-manual](https://github.com/riscv/riscv-isa-manual). Clone it as a sibling directory:
+The ISA manual content comes from [riscv/riscv-isa-manual](https://github.com/riscv/riscv-isa-manual). Selected non-ISA specs come from sibling RISC-V repositories. Clone them as sibling directories:
 
 ```bash
 git clone --recurse-submodules https://github.com/riscv/riscv-isa-manual ../riscv-isa-manual
+git clone --recurse-submodules https://github.com/riscv-non-isa/riscv-asm-manual ../riscv-asm-manual
+git clone --recurse-submodules https://github.com/riscv-non-isa/riscv-sbi-doc ../riscv-sbi-doc
+git clone --recurse-submodules https://github.com/riscv-non-isa/riscv-iommu ../riscv-iommu
+git clone --recurse-submodules https://github.com/riscv-non-isa/riscv-trace-spec ../riscv-trace-spec
 ```
 
-The path can be overridden with the `MANUAL_DIR` environment variable.
+Paths can be overridden with the environment variables below.
 
 ### asciidoctor-mdx
 
@@ -77,13 +80,17 @@ bun install
 ./gen-mdx.sh
 ```
 
-This converts both volumes (unprivileged + privileged), copies images, and writes docs and sidebar JSON into `docs/`.
+This converts both ISA volumes and selected non-ISA specs, copies images, and writes docs and sidebar JSON into `docs/`.
 
 Environment variables:
 
 | Variable | Default | Description |
 |---|---|---|
 | `MANUAL_DIR` | `../riscv-isa-manual` | Path to the riscv-isa-manual checkout |
+| `ASM_MANUAL_DIR` | `../riscv-asm-manual` | Path to the RISC-V assembly manual checkout |
+| `SBI_DOC_DIR` | `../riscv-sbi-doc` | Path to the RISC-V SBI spec checkout |
+| `IOMMU_DIR` | `../riscv-iommu` | Path to the RISC-V IOMMU spec checkout |
+| `TRACE_SPEC_DIR` | `../riscv-trace-spec` | Path to the RISC-V trace spec checkout |
 | `ASCIIDOCTOR_MDX` | `~/projects/asciidoctor/wrappers/asciidoctor-mdx` | Path to the asciidoctor-mdx wrapper |
 
 ### 3. Build or develop

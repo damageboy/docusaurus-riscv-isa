@@ -9,6 +9,7 @@
 .cache-loader
 /docs/*
 /static/built-manual-sha.txt
+/static/built-upstream-shas.txt
 /static/img/riscv-asm-manual/*
 /static/img/riscv-sbi-doc/*
 /static/img/riscv-iommu/*
