@@ -4,6 +4,7 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import remarkGridtables from '@adobe/remark-gridtables';
 import { TYPE_TABLE, mdast2hastGridTablesHandler } from '@adobe/mdast-util-gridtables';
+// @ts-expect-error remark-kroki-plugin ships CommonJS types but loads as default at runtime.
 import remarkKroki from 'remark-kroki-plugin';
 
 const krokiOptions = (id) => ({
@@ -23,6 +24,12 @@ const krokiOptions = (id) => ({
 
 const manualVersion = process.env.MANUAL_VERSION || '';
 const manualVersionUrl = process.env.MANUAL_VERSION_URL || 'https://github.com/riscv/riscv-isa-manual';
+const docsExclude = [
+  '**/_*.{js,jsx,ts,tsx}',
+  '**/_*/**',
+  '**/*.test.{js,jsx,ts,tsx}',
+  '**/__tests__/**',
+];
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -65,6 +72,7 @@ const config = {
       ({
         docs: {
           sidebarPath: './sidebars.js',
+          exclude: docsExclude,
           remarkPlugins: [remarkMath, [remarkKroki, krokiOptions('riscv-isa')], remarkGridtables],
           rehypePlugins: [rehypeKatex],
         },
@@ -76,17 +84,16 @@ const config = {
     ],
   ],
 
-  themes: [
+  themes: /** @type {import('@docusaurus/types').PluginConfig[]} */ ([
     [
       require.resolve('@easyops-cn/docusaurus-search-local'),
-      /** @type {import("@easyops-cn/docusaurus-search-local").PluginOptions} */
-      ({
+      {
         hashed: true,
         language: ['en'],
         docsRouteBasePath: ['docs'],
-      }),
+      },
     ],
-  ],
+  ]),
 
   stylesheets: [
     {
@@ -119,6 +126,30 @@ const config = {
             sidebarId: 'privilegedSidebar',
             position: 'left',
             label: 'Privileged',
+          },
+          {
+            type: 'docSidebar',
+            sidebarId: 'asmManualSidebar',
+            position: 'left',
+            label: 'Assembly',
+          },
+          {
+            type: 'docSidebar',
+            sidebarId: 'sbiSidebar',
+            position: 'left',
+            label: 'SBI',
+          },
+          {
+            type: 'docSidebar',
+            sidebarId: 'iommuSidebar',
+            position: 'left',
+            label: 'IOMMU',
+          },
+          {
+            type: 'docSidebar',
+            sidebarId: 'traceSidebar',
+            position: 'left',
+            label: 'Trace',
           },
           ...(manualVersion ? [{
             href: manualVersionUrl,
