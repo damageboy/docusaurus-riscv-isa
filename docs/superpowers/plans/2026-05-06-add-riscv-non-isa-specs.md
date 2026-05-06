@@ -49,7 +49,7 @@ Run:
 
 ```bash
 set -euo pipefail
-test -f /home/dmg/projects/riscv-asm-manual/src/prelude.adoc
+test -f /home/dmg/projects/riscv-asm-manual/src/riscv-asm.adoc
 test -f /home/dmg/projects/riscv-sbi-doc/riscv-sbi.adoc
 test -f /home/dmg/projects/riscv-iommu/src/riscv-iommu.adoc
 test -f /home/dmg/projects/riscv-trace-spec/header.adoc
@@ -245,7 +245,7 @@ Add after ISA copy helper calls:
 ```bash
 build_spec_mdx \
   "$ASM_MANUAL_DIR" \
-  "src/prelude.adoc" \
+  "src/riscv-asm.adoc" \
   "asm-manual" \
   "asm-manual" \
   "asm-manual" \
@@ -580,7 +580,7 @@ Replace the existing pipeline code block with one that includes:
 
 ```text
 riscv-isa-manual/src/{unpriv,priv/priv}.adoc
-riscv-asm-manual/src/prelude.adoc
+riscv-asm-manual/src/riscv-asm.adoc
 riscv-sbi-doc/riscv-sbi.adoc
 riscv-iommu/src/riscv-iommu.adoc
 riscv-trace-spec/header.adoc
