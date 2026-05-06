@@ -5,7 +5,7 @@ on:
     branches: [master]
   schedule:
     # Daily at 02:00 UTC — picks up upstream riscv-isa-manual changes
-    - cron: '0 2 * * *'
+    - cron: "0 2 * * *"
   workflow_dispatch:
 
 jobs:
@@ -138,7 +138,7 @@ jobs:
       - name: Set up Ruby 3.4
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.4'
+          ruby-version: "3.4"
 
       - name: Cache Ruby gems
         uses: actions/cache@v4
