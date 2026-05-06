@@ -88,16 +88,16 @@ This converts both ISA volumes and selected non-ISA specs, copies images, and wr
 
 Environment variables:
 
-| Variable              | Default                                           | Description                                                |
-| --------------------- | ------------------------------------------------- | ---------------------------------------------------------- |
-| `MANUAL_DIR`          | `../riscv-isa-manual`                             | Path to the riscv-isa-manual checkout                      |
-| `ASM_MANUAL_DIR`      | `../riscv-asm-manual`                             | Path to the RISC-V assembly manual checkout                |
-| `SBI_DOC_DIR`         | `../riscv-sbi-doc`                                | Path to the RISC-V SBI spec checkout                       |
-| `IOMMU_DIR`           | `../riscv-iommu`                                  | Path to the RISC-V IOMMU spec checkout                     |
-| `TRACE_SPEC_DIR`      | `../riscv-trace-spec`                             | Path to the RISC-V trace spec checkout                     |
-| `SERVER_PLATFORM_DIR` | `../riscv-server-platform`                        | Path to the RISC-V Server Platform spec checkout           |
-| `CTR_DIR`             | `../riscv-control-transfer-records`               | Path to the RISC-V Control Transfer Records spec checkout  |
-| `ASCIIDOCTOR_MDX`     | `~/projects/asciidoctor/wrappers/asciidoctor-mdx` | Path to the asciidoctor-mdx wrapper                        |
+| Variable              | Default                                           | Description                                               |
+| --------------------- | ------------------------------------------------- | --------------------------------------------------------- |
+| `MANUAL_DIR`          | `../riscv-isa-manual`                             | Path to the riscv-isa-manual checkout                     |
+| `ASM_MANUAL_DIR`      | `../riscv-asm-manual`                             | Path to the RISC-V assembly manual checkout               |
+| `SBI_DOC_DIR`         | `../riscv-sbi-doc`                                | Path to the RISC-V SBI spec checkout                      |
+| `IOMMU_DIR`           | `../riscv-iommu`                                  | Path to the RISC-V IOMMU spec checkout                    |
+| `TRACE_SPEC_DIR`      | `../riscv-trace-spec`                             | Path to the RISC-V trace spec checkout                    |
+| `SERVER_PLATFORM_DIR` | `../riscv-server-platform`                        | Path to the RISC-V Server Platform spec checkout          |
+| `CTR_DIR`             | `../riscv-control-transfer-records`               | Path to the RISC-V Control Transfer Records spec checkout |
+| `ASCIIDOCTOR_MDX`     | `~/projects/asciidoctor/wrappers/asciidoctor-mdx` | Path to the asciidoctor-mdx wrapper                       |
 
 ### 3. Build or develop
 
