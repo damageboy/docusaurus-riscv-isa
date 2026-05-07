@@ -1,0 +1,5 @@
+services:
+  kroki:
+    image: yuzutech/kroki:latest
+    ports:
+      - "8000:8000"

@@ -10,8 +10,10 @@ import {
 // @ts-expect-error remark-kroki-plugin ships CommonJS types but loads as default at runtime.
 import remarkKroki from "remark-kroki-plugin";
 
+const krokiBase = process.env.KROKI_BASE_URL || "https://kroki.io";
+
 const krokiOptions = (id) => ({
-	krokiBase: "https://kroki.io",
+	krokiBase,
 	lang: "kroki",
 	langAliases: [
 		"actdiag",

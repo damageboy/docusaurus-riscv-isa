@@ -237,13 +237,11 @@ jobs:
           AIA_DIR: ${{ github.workspace }}/riscv-aia
 
       - name: Restore kroki diagram cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache@v4
         with:
           path: static/img/riscv-isa/kroki
-          key: kroki-${{ hashFiles('docs/**/*.mdx') }}-${{ github.run_id }}-${{ github.run_attempt }}
-          restore-keys: |
-            kroki-${{ hashFiles('docs/**/*.mdx') }}-
-            kroki-
+          key: kroki-${{ hashFiles('docs/**/*.mdx') }}
+          restore-keys: kroki-
 
       - name: Stamp built upstream SHAs
         run: echo '${{ needs.check.outputs.upstream_stamp }}' > static/built-upstream-shas.txt
@@ -251,25 +249,27 @@ jobs:
       - name: Purge cached build metadata
         run: rm -rf .docusaurus node_modules/.cache
 
-      - name: Build Docusaurus site
+      - name: Start local Kroki
         run: |
-          for attempt in 1 2 3 4 5; do
-            if bun run build; then
+          docker compose -f docker-compose.kroki.yml up -d
+          for attempt in {1..60}; do
+            if curl -fsS http://localhost:8000/health >/dev/null; then
               exit 0
             fi
-            if [ "$attempt" -eq 5 ]; then
-              exit 1
-            fi
-            echo "Docusaurus build failed (attempt $attempt/5); retrying to reuse Kroki renders cached during this run."
-            sleep $((attempt * 10))
+            sleep 2
           done
+          docker compose -f docker-compose.kroki.yml ps
+          docker compose -f docker-compose.kroki.yml logs --tail=100
+          exit 1
 
-      - name: Save kroki diagram cache
+      - name: Build Docusaurus site
+        run: bun run build
+        env:
+          KROKI_BASE_URL: http://localhost:8000
+
+      - name: Stop local Kroki
         if: always()
-        uses: actions/cache/save@v4
-        with:
-          path: static/img/riscv-isa/kroki
-          key: kroki-${{ hashFiles('docs/**/*.mdx') }}-${{ github.run_id }}-${{ github.run_attempt }}
+        run: docker compose -f docker-compose.kroki.yml down
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
