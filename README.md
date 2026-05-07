@@ -22,7 +22,7 @@ A searchable, navigable web rendition of the [RISC-V ISA Manual](https://github.
 ## Content Pipeline
 
 ```text
-riscv-isa-manual/src/{unpriv/unpriv,priv/priv}.adoc
+riscv-isa-manual/src/{unpriv/unpriv,priv/priv,profiles/profiles}.adoc
 riscv-asm-manual/src/riscv-asm.adoc
 riscv-sbi-doc/riscv-sbi.adoc
 riscv-iommu/src/riscv-iommu.adoc
@@ -33,12 +33,12 @@ riscv-debug-spec/riscv-debug-header.adoc
 riscv-aia/src/riscv-interrupts.adoc
     └─ gen-mdx.sh
          └─ calls asciidoctor-mdx
-              ├─ docs/{unprivileged,privileged,asm-manual,sbi,iommu,trace,server-platform,control-transfer-records,debug,aia}/*.mdx
-              ├─ docs/{unprivileged,privileged,asm-manual,sbi,iommu,trace,server-platform,control-transfer-records,debug,aia}/sidebar.json
+              ├─ docs/{unprivileged,privileged,profiles,asm-manual,sbi,iommu,trace,server-platform,control-transfer-records,debug,aia}/*.mdx
+              ├─ docs/{unprivileged,privileged,profiles,asm-manual,sbi,iommu,trace,server-platform,control-transfer-records,debug,aia}/sidebar.json
               └─ static/img/<spec>/
 ```
 
-The generated MDX files and sidebar JSONs land in `docs/unprivileged/`, `docs/privileged/`, `docs/asm-manual/`, `docs/sbi/`, `docs/iommu/`, `docs/trace/`, `docs/server-platform/`, `docs/control-transfer-records/`, `docs/debug/`, and `docs/aia/` (gitignored — never hand-edit them).
+The generated MDX files and sidebar JSONs land in `docs/unprivileged/`, `docs/privileged/`, `docs/profiles/`, `docs/asm-manual/`, `docs/sbi/`, `docs/iommu/`, `docs/trace/`, `docs/server-platform/`, `docs/control-transfer-records/`, `docs/debug/`, and `docs/aia/` (gitignored — never hand-edit them).
 
 ## Dependencies
 
@@ -96,7 +96,7 @@ bun install
 ./gen-mdx.sh
 ```
 
-This converts both ISA volumes and selected non-ISA specs, copies images, and writes docs and sidebar JSON into `docs/`.
+This converts ISA volumes and selected non-ISA specs, copies images, and writes docs and sidebar JSON into `docs/`.
 
 Environment variables:
 
