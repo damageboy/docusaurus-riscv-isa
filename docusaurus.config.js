@@ -196,6 +196,12 @@ const config = {
 						position: "left",
 						label: "Debug",
 					},
+					{
+						type: "docSidebar",
+						sidebarId: "aiaSidebar",
+						position: "left",
+						label: "AIA",
+					},
 					...(manualVersion
 						? [
 								{
