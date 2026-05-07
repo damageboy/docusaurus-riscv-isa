@@ -22,6 +22,7 @@
 ## Task 1: Prepare local AIA source repo
 
 **Files:**
+
 - No tracked file changes.
 
 - [ ] **Step 1: Clone/update AIA source repo**
@@ -53,6 +54,7 @@ Expected: command exits 0.
 ## Task 2: Extend generation script
 
 **Files:**
+
 - Modify: `gen-mdx.sh`
 
 - [ ] **Step 1: Add `AIA_DIR`**
@@ -112,6 +114,7 @@ Expected: build exits 0 and commit succeeds. If generated image dir is untracked
 ## Task 3: Wire sidebar and navbar
 
 **Files:**
+
 - Modify: `sidebars.js`
 - Modify: `docusaurus.config.js`
 
@@ -157,6 +160,7 @@ Expected: build exits 0.
 ## Task 4: Update CI
 
 **Files:**
+
 - Modify: `.github/workflows/build-deploy.yml`
 
 - [ ] **Step 1: Add output**
@@ -164,7 +168,7 @@ Expected: build exits 0.
 In `jobs.check.outputs`, add:
 
 ```yaml
-      aia_sha: ${{ steps.decide.outputs.aia_sha }}
+aia_sha: ${{ steps.decide.outputs.aia_sha }}
 ```
 
 - [ ] **Step 2: Add SHA lookup/stamp/output**
@@ -192,13 +196,13 @@ Add to output block:
 After Debug checkout, add:
 
 ```yaml
-      - name: Checkout riscv-aia
-        uses: actions/checkout@v4
-        with:
-          repository: riscv/riscv-aia
-          ref: ${{ needs.check.outputs.aia_sha }}
-          path: riscv-aia
-          submodules: recursive
+- name: Checkout riscv-aia
+  uses: actions/checkout@v4
+  with:
+    repository: riscv/riscv-aia
+    ref: ${{ needs.check.outputs.aia_sha }}
+    path: riscv-aia
+    submodules: recursive
 ```
 
 - [ ] **Step 4: Add generator env var**
@@ -206,7 +210,7 @@ After Debug checkout, add:
 In `Generate MDX docs` env, add:
 
 ```yaml
-          AIA_DIR: ${{ github.workspace }}/riscv-aia
+AIA_DIR: ${{ github.workspace }}/riscv-aia
 ```
 
 - [ ] **Step 5: Validate and commit**
@@ -227,6 +231,7 @@ Expected: YAML parse and build exit 0.
 ## Task 5: Update docs and ignores
 
 **Files:**
+
 - Modify: `README.md`
 - Modify: `.gitignore`
 
@@ -277,6 +282,7 @@ Expected: build exits 0 and generated AIA images are ignored.
 ## Task 6: Full verification and push check
 
 **Files:**
+
 - No intended file changes.
 
 - [ ] **Step 1: Regenerate all docs**

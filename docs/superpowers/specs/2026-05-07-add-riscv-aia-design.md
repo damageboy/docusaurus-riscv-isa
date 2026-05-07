@@ -44,8 +44,8 @@ Local probing showed those content images live next to the AsciiDoc files under 
 
 Add source directory variable:
 
-| Env var | Default |
-|---|---|
+| Env var   | Default        |
+| --------- | -------------- |
 | `AIA_DIR` | `../riscv-aia` |
 
 Add a `build_spec_mdx` call:
