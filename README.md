@@ -22,7 +22,7 @@ A searchable, navigable web rendition of the [RISC-V ISA Manual](https://github.
 ## Content Pipeline
 
 ```text
-riscv-isa-manual/src/{unpriv,priv/priv}.adoc
+riscv-isa-manual/src/{unpriv/unpriv,priv/priv}.adoc
 riscv-asm-manual/src/riscv-asm.adoc
 riscv-sbi-doc/riscv-sbi.adoc
 riscv-iommu/src/riscv-iommu.adoc
