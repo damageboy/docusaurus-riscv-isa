@@ -285,10 +285,9 @@ prepare_debug_registers() {
 		fi
 	done
 
-	if ! python3 - <<'PY'
+	if ! python3 - <<'PY'; then
 import sympy
 PY
-	then
 		echo "Python dependency sympy not found; creating $WRAP_DIR/debug-python-venv" >&2
 		python3 -m venv "$WRAP_DIR/debug-python-venv"
 		"$WRAP_DIR/debug-python-venv/bin/python" -m pip install -q sympy
