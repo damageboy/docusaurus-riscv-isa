@@ -63,7 +63,6 @@ const config = {
 	baseUrl: "/",
 
 	onBrokenLinks: "warn",
-	onBrokenMarkdownLinks: "warn",
 
 	future: {
 		v4: true, // opt-in for Docusaurus v4 planned changes
@@ -71,6 +70,9 @@ const config = {
 	},
 
 	markdown: {
+		hooks: {
+			onBrokenMarkdownLinks: "warn",
+		},
 		// {#id} heading syntax requires this when future.v4 is enabled
 		mdx1Compat: { headingIds: true },
 		remarkRehypeOptions: {
@@ -117,6 +119,7 @@ const config = {
 				hashed: true,
 				language: ["en"],
 				docsRouteBasePath: ["docs"],
+				indexBlog: false,
 			},
 		],
 	]),
