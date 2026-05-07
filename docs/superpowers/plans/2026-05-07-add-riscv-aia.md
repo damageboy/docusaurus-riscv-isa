@@ -43,9 +43,9 @@ Expected: `/home/dmg/projects/riscv-aia` exists.
 ```bash
 set -euo pipefail
 test -f /home/dmg/projects/riscv-aia/src/riscv-interrupts.adoc
-test -d /home/dmg/projects/riscv-aia/docs-resources/images
-test -f /home/dmg/projects/riscv-aia/docs-resources/images/AdvPLIC-ex-1Domain.png
-test -f /home/dmg/projects/riscv-aia/docs-resources/images/IOMMU-guestIntrFiles.png
+test -d /home/dmg/projects/riscv-aia/src
+test -f /home/dmg/projects/riscv-aia/src/AdvPLIC-ex-1Domain.png
+test -f /home/dmg/projects/riscv-aia/src/IOMMU-guestIntrFiles.png
 ```
 
 Expected: command exits 0.
@@ -75,9 +75,9 @@ build_spec_mdx \
 	"aia" \
 	"aia" \
 	"/img/riscv-aia/" \
-	"$AIA_DIR/docs-resources/images" \
+	"$AIA_DIR/src" \
 	"https://github.com/riscv/riscv-aia/blob/main" \
-	-a "imagesdir=$AIA_DIR/docs-resources/images"
+	-a "imagesdir=$AIA_DIR/src"
 ```
 
 - [ ] **Step 3: Add AIA image copy**
@@ -85,7 +85,7 @@ build_spec_mdx \
 Add to image copy block:
 
 ```bash
-copy_images "$AIA_DIR/docs-resources/images" "$SCRIPT_DIR/static/img/riscv-aia"
+copy_images "$AIA_DIR/src" "$SCRIPT_DIR/static/img/riscv-aia"
 ```
 
 - [ ] **Step 4: Validate generation**

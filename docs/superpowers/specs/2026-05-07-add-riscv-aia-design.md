@@ -38,7 +38,7 @@ image::AdvPLIC-ex-1Domain.png[]
 image::IOMMU-guestIntrFiles.png[]
 ```
 
-The images live under `docs-resources/images`, so generation should pass `imagesdir=$AIA_DIR/docs-resources/images` and copy that directory to `static/img/riscv-aia/`.
+Local probing showed those content images live next to the AsciiDoc files under `src/`, not under `docs-resources/images`. Generation should pass `imagesdir=$AIA_DIR/src` and copy source PNGs from `src/` to `static/img/riscv-aia/`. `docs-resources/images` only holds shared logo assets.
 
 ## Generation design
 
@@ -54,9 +54,9 @@ Add a `build_spec_mdx` call:
 - root doc: `src/riscv-interrupts.adoc`
 - build/docs/sidebar slug: `aia`
 - image URL: `/img/riscv-aia/`
-- image root: `$AIA_DIR/docs-resources/images`
+- image root: `$AIA_DIR/src`
 - edit URL base: `https://github.com/riscv/riscv-aia/blob/main`
-- attrs: `imagesdir=$AIA_DIR/docs-resources/images`
+- attrs: `imagesdir=$AIA_DIR/src`
 
 No pre-generation helper like Debug’s register generation is expected.
 
