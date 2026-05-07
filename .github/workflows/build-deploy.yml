@@ -20,6 +20,7 @@ jobs:
       server_platform_sha: ${{ steps.decide.outputs.server_platform_sha }}
       ctr_sha: ${{ steps.decide.outputs.ctr_sha }}
       debug_sha: ${{ steps.decide.outputs.debug_sha }}
+      aia_sha: ${{ steps.decide.outputs.aia_sha }}
       upstream_stamp: ${{ steps.decide.outputs.upstream_stamp }}
       should_build: ${{ steps.decide.outputs.should_build }}
     steps:
@@ -40,7 +41,8 @@ jobs:
           SERVER_PLATFORM_SHA="$(get_sha https://github.com/riscv-non-isa/riscv-server-platform.git)"
           CTR_SHA="$(get_sha https://github.com/riscv/riscv-control-transfer-records.git)"
           DEBUG_SHA="$(get_sha https://github.com/riscv/riscv-debug-spec.git)"
-          UPSTREAM_STAMP="riscv-isa-manual=$ISA_SHA;riscv-asm-manual=$ASM_SHA;riscv-sbi-doc=$SBI_SHA;riscv-iommu=$IOMMU_SHA;riscv-trace-spec=$TRACE_SHA;riscv-server-platform=$SERVER_PLATFORM_SHA;riscv-control-transfer-records=$CTR_SHA;riscv-debug-spec=$DEBUG_SHA"
+          AIA_SHA="$(get_sha https://github.com/riscv/riscv-aia.git)"
+          UPSTREAM_STAMP="riscv-isa-manual=$ISA_SHA;riscv-asm-manual=$ASM_SHA;riscv-sbi-doc=$SBI_SHA;riscv-iommu=$IOMMU_SHA;riscv-trace-spec=$TRACE_SHA;riscv-server-platform=$SERVER_PLATFORM_SHA;riscv-control-transfer-records=$CTR_SHA;riscv-debug-spec=$DEBUG_SHA;riscv-aia=$AIA_SHA"
 
           printf 'Upstream stamp: %s\n' "$UPSTREAM_STAMP"
           {
@@ -52,6 +54,7 @@ jobs:
             echo "server_platform_sha=$SERVER_PLATFORM_SHA"
             echo "ctr_sha=$CTR_SHA"
             echo "debug_sha=$DEBUG_SHA"
+            echo "aia_sha=$AIA_SHA"
             echo "upstream_stamp=$UPSTREAM_STAMP"
           } >> "$GITHUB_OUTPUT"
 
@@ -144,6 +147,14 @@ jobs:
           repository: riscv/riscv-debug-spec
           ref: ${{ needs.check.outputs.debug_sha }}
           path: riscv-debug-spec
+          submodules: recursive
+
+      - name: Checkout riscv-aia
+        uses: actions/checkout@v4
+        with:
+          repository: riscv/riscv-aia
+          ref: ${{ needs.check.outputs.aia_sha }}
+          path: riscv-aia
           submodules: recursive
 
       - name: Resolve manual version
@@ -241,6 +252,7 @@ jobs:
           SERVER_PLATFORM_DIR: ${{ github.workspace }}/riscv-server-platform
           CTR_DIR: ${{ github.workspace }}/riscv-control-transfer-records
           DEBUG_SPEC_DIR: ${{ github.workspace }}/riscv-debug-spec
+          AIA_DIR: ${{ github.workspace }}/riscv-aia
 
       - name: Stamp built upstream SHAs
         run: echo '${{ needs.check.outputs.upstream_stamp }}' > static/built-upstream-shas.txt
