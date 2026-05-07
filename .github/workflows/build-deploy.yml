@@ -202,13 +202,6 @@ jobs:
           gem build asciidoctor-mdx.gemspec
           gem install --no-document asciidoctor-mdx-*.gem
 
-      - name: Restore kroki diagram cache
-        uses: actions/cache@v4
-        with:
-          path: static/img/riscv-isa/kroki
-          key: kroki-${{ hashFiles('docs/**/*.mdx') }}
-          restore-keys: kroki-
-
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
 
@@ -243,6 +236,13 @@ jobs:
           DEBUG_SPEC_DIR: ${{ github.workspace }}/riscv-debug-spec
           AIA_DIR: ${{ github.workspace }}/riscv-aia
 
+      - name: Restore kroki diagram cache
+        uses: actions/cache@v4
+        with:
+          path: static/img/riscv-isa/kroki
+          key: kroki-${{ hashFiles('docs/**/*.mdx') }}
+          restore-keys: kroki-
+
       - name: Stamp built upstream SHAs
         run: echo '${{ needs.check.outputs.upstream_stamp }}' > static/built-upstream-shas.txt
 
@@ -258,6 +258,7 @@ jobs:
           path: build
 
       - name: Keep dependency cache free of build metadata
+        if: always()
         run: rm -rf .docusaurus node_modules/.cache
 
   deploy:
