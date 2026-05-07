@@ -1,7 +1,41 @@
 import clsx from "clsx";
+import BrowserOnly from "@docusaurus/BrowserOnly";
 import Link from "@docusaurus/Link";
+import { searchBarShortcutKeymap } from "@generated/@easyops-cn/docusaurus-search-local/default/generated";
 import Heading from "@theme/Heading";
 import styles from "./styles.module.css";
+
+function isMacPlatform() {
+	return /Mac|iPhone|iPad|iPod/i.test(navigator.platform);
+}
+
+function getShortcutKeys(keymap, isMac) {
+	return keymap.split("+").map((key) => {
+		const normalized = key.trim().toLowerCase();
+		if (normalized === "mod") return isMac ? "⌘" : "Ctrl";
+		if (normalized === "cmd") return isMac ? "⌘" : "Cmd";
+		if (normalized === "ctrl") return "Ctrl";
+		if (normalized === "alt") return isMac ? "⌥" : "Alt";
+		if (normalized === "shift") return isMac ? "⇧" : "Shift";
+		return normalized.toUpperCase();
+	});
+}
+
+function SearchShortcut() {
+	return (
+		<BrowserOnly
+			fallback={getShortcutKeys(searchBarShortcutKeymap, false).map((key) => (
+				<kbd key={key}>{key}</kbd>
+			))}
+		>
+			{() =>
+				getShortcutKeys(searchBarShortcutKeymap, isMacPlatform()).map((key) => (
+					<kbd key={key}>{key}</kbd>
+				))
+			}
+		</BrowserOnly>
+	);
+}
 
 const FeatureList = [
 	{
@@ -65,9 +99,9 @@ const FeatureList = [
 		title: "Full-Text Search",
 		description: (
 			<>
-				Every generated spec is indexed and searchable. Press <kbd>/</kbd> or
-				click the search bar to find any instruction, CSR, register, or concept
-				instantly.
+				Every generated spec is indexed and searchable. Press <SearchShortcut />{" "}
+				or click the search bar to find any instruction, CSR, register, or
+				concept instantly.
 			</>
 		),
 	},
