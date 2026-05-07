@@ -23,6 +23,7 @@ IOMMU_DIR="$(resolve_dir IOMMU_DIR "$SCRIPT_DIR/../riscv-iommu")"
 TRACE_SPEC_DIR="$(resolve_dir TRACE_SPEC_DIR "$SCRIPT_DIR/../riscv-trace-spec")"
 SERVER_PLATFORM_DIR="$(resolve_dir SERVER_PLATFORM_DIR "$SCRIPT_DIR/../riscv-server-platform")"
 CTR_DIR="$(resolve_dir CTR_DIR "$SCRIPT_DIR/../riscv-control-transfer-records")"
+DEBUG_SPEC_DIR="$(resolve_dir DEBUG_SPEC_DIR "$SCRIPT_DIR/../riscv-debug-spec")"
 ASCIIDOCTOR_MDX="${ASCIIDOCTOR_MDX:-/home/dmg/projects/asciidoctor/wrappers/asciidoctor-mdx}"
 
 if [ -z "${ASDF_RUBY_VERSION:-}" ] && [ -f "$MANUAL_DIR/.tool-versions" ]; then
@@ -43,6 +44,7 @@ SBI_REVISION_BACKUP="$WRAP_DIR/sbi-revision.adoc-snippet"
 SBI_REVISION_CLEANUP=0
 SBI_REVISION_EXISTED=0
 SBI_REVISION_DIR_EXISTED=0
+DEBUG_GENERATED_FILES=()
 
 cleanup() {
 	local status=$?
@@ -57,6 +59,10 @@ cleanup() {
 				rmdir "$SBI_REVISION_DIR" 2>/dev/null || true
 			fi
 		fi
+	fi
+
+	if [ "${#DEBUG_GENERATED_FILES[@]}" -gt 0 ]; then
+		rm -f "${DEBUG_GENERATED_FILES[@]}" || status=$?
 	fi
 
 	rm -rf "$WRAP_DIR" || status=$?
@@ -250,6 +256,48 @@ prepare_sbi_revision() {
 	} >"$SBI_REVISION_SNIPPET"
 }
 
+prepare_debug_registers() {
+	local generated_names=(
+		abstract_commands.adoc
+		abstract_commands-def.adoc
+		core_registers.adoc
+		core_registers-def.adoc
+		dm_registers.adoc
+		dm_registers-def.adoc
+		hwbp_registers.adoc
+		hwbp_registers-def.adoc
+		jtag_registers.adoc
+		jtag_registers-def.adoc
+		sample_registers.adoc
+		sample_registers-def.adoc
+		sw_registers.adoc
+		sw_registers-def.adoc
+	)
+	local debug_python_path_prefix=""
+	local name
+	local path
+
+	DEBUG_GENERATED_FILES=()
+	for name in "${generated_names[@]}"; do
+		path="$DEBUG_SPEC_DIR/build/$name"
+		if [ ! -e "$path" ]; then
+			DEBUG_GENERATED_FILES+=("$path")
+		fi
+	done
+
+	if ! python3 - <<'PY'
+import sympy
+PY
+	then
+		echo "Python dependency sympy not found; creating $WRAP_DIR/debug-python-venv" >&2
+		python3 -m venv "$WRAP_DIR/debug-python-venv"
+		"$WRAP_DIR/debug-python-venv/bin/python" -m pip install -q sympy
+		debug_python_path_prefix="$WRAP_DIR/debug-python-venv/bin:"
+	fi
+
+	PATH="${debug_python_path_prefix}$PATH" make -C "$DEBUG_SPEC_DIR/build" build-registers
+}
+
 # Run from MANUAL_DIR so the .tool-versions Ruby version is picked up by asdf.
 cd "$MANUAL_DIR"
 
@@ -350,6 +398,18 @@ build_spec_mdx \
 	-a "imagesdir=$CTR_DIR/docs-resources/images" \
 	--require=asciidoctor-bibtex
 
+prepare_debug_registers
+build_spec_mdx \
+	"$DEBUG_SPEC_DIR" \
+	"riscv-debug-header.adoc" \
+	"debug" \
+	"debug" \
+	"debug" \
+	"/img/riscv-debug-spec/" \
+	"$DEBUG_SPEC_DIR/docs-resources/images" \
+	"https://github.com/riscv/riscv-debug-spec/blob/main" \
+	-a "imagesdir=$DEBUG_SPEC_DIR/docs-resources/images"
+
 echo "Copying images..."
 copy_images "$MANUAL_DIR/src/images" "$SCRIPT_DIR/static/img/riscv-isa"
 copy_images "$ASM_MANUAL_DIR/docs-resources/images" "$SCRIPT_DIR/static/img/riscv-asm-manual"
@@ -358,5 +418,7 @@ copy_images "$IOMMU_DIR/src/images" "$SCRIPT_DIR/static/img/riscv-iommu"
 copy_images "$TRACE_SPEC_DIR/images" "$SCRIPT_DIR/static/img/riscv-trace-spec"
 copy_images "$SERVER_PLATFORM_DIR/images" "$SCRIPT_DIR/static/img/riscv-server-platform"
 copy_images "$CTR_DIR/docs-resources/images" "$SCRIPT_DIR/static/img/riscv-control-transfer-records"
+copy_images "$DEBUG_SPEC_DIR/docs-resources/images" "$SCRIPT_DIR/static/img/riscv-debug-spec"
+copy_images "$DEBUG_SPEC_DIR/fig" "$SCRIPT_DIR/static/img/riscv-debug-spec/fig"
 
 echo "Done. Run 'bun run build' or 'bun run start' to rebuild the site."
