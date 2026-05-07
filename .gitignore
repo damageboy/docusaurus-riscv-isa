@@ -17,6 +17,7 @@
 /static/img/riscv-server-platform/*
 /static/img/riscv-control-transfer-records/*
 /static/img/riscv-debug-spec/*
+/static/img/riscv-aia/*
 
 # Misc
 .DS_Store

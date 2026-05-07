@@ -30,14 +30,15 @@ riscv-trace-spec/header.adoc
 riscv-server-platform/server_platform_header.adoc
 riscv-control-transfer-records/header.adoc
 riscv-debug-spec/riscv-debug-header.adoc
+riscv-aia/src/riscv-interrupts.adoc
     └─ gen-mdx.sh
          └─ calls asciidoctor-mdx
-              ├─ docs/{unprivileged,privileged,asm-manual,sbi,iommu,trace,server-platform,control-transfer-records,debug}/*.mdx
-              ├─ docs/{unprivileged,privileged,asm-manual,sbi,iommu,trace,server-platform,control-transfer-records,debug}/sidebar.json
+              ├─ docs/{unprivileged,privileged,asm-manual,sbi,iommu,trace,server-platform,control-transfer-records,debug,aia}/*.mdx
+              ├─ docs/{unprivileged,privileged,asm-manual,sbi,iommu,trace,server-platform,control-transfer-records,debug,aia}/sidebar.json
               └─ static/img/<spec>/
 ```
 
-The generated MDX files and sidebar JSONs land in `docs/unprivileged/`, `docs/privileged/`, `docs/asm-manual/`, `docs/sbi/`, `docs/iommu/`, `docs/trace/`, `docs/server-platform/`, `docs/control-transfer-records/`, and `docs/debug/` (gitignored — never hand-edit them).
+The generated MDX files and sidebar JSONs land in `docs/unprivileged/`, `docs/privileged/`, `docs/asm-manual/`, `docs/sbi/`, `docs/iommu/`, `docs/trace/`, `docs/server-platform/`, `docs/control-transfer-records/`, `docs/debug/`, and `docs/aia/` (gitignored — never hand-edit them).
 
 ## Dependencies
 
@@ -54,6 +55,7 @@ git clone --recurse-submodules https://github.com/riscv-non-isa/riscv-trace-spec
 git clone --recurse-submodules https://github.com/riscv-non-isa/riscv-server-platform ../riscv-server-platform
 git clone --recurse-submodules https://github.com/riscv/riscv-control-transfer-records ../riscv-control-transfer-records
 git clone --recurse-submodules https://github.com/riscv/riscv-debug-spec ../riscv-debug-spec
+git clone --recurse-submodules https://github.com/riscv/riscv-aia ../riscv-aia
 ```
 
 The Debug spec generates register definition AsciiDoc files from XML before conversion. This requires Python `sympy`:
@@ -108,6 +110,7 @@ Environment variables:
 | `SERVER_PLATFORM_DIR` | `../riscv-server-platform`                        | Path to the RISC-V Server Platform spec checkout          |
 | `CTR_DIR`             | `../riscv-control-transfer-records`               | Path to the RISC-V Control Transfer Records spec checkout |
 | `DEBUG_SPEC_DIR`      | `../riscv-debug-spec`                             | Path to the RISC-V Debug spec checkout                    |
+| `AIA_DIR`             | `../riscv-aia`                                    | Path to the RISC-V AIA spec checkout                      |
 | `ASCIIDOCTOR_MDX`     | `~/projects/asciidoctor/wrappers/asciidoctor-mdx` | Path to the asciidoctor-mdx wrapper                       |
 
 ### 3. Build or develop
