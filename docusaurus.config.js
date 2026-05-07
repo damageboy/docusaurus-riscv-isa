@@ -156,6 +156,12 @@ const config = {
 					},
 					{
 						type: "docSidebar",
+						sidebarId: "profilesSidebar",
+						position: "left",
+						label: "Profiles",
+					},
+					{
+						type: "docSidebar",
 						sidebarId: "asmManualSidebar",
 						position: "left",
 						label: "Assembly",

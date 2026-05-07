@@ -1,6 +1,7 @@
 // @ts-check
 import unprivData from "./docs/unprivileged/sidebar.json";
 import privData from "./docs/privileged/sidebar.json";
+import profilesData from "./docs/profiles/sidebar.json";
 import asmManualData from "./docs/asm-manual/sidebar.json";
 import sbiData from "./docs/sbi/sidebar.json";
 import iommuData from "./docs/iommu/sidebar.json";
@@ -45,6 +46,7 @@ function withPrefix(items) {
 export default {
 	unprivilegedSidebar: withPrefix(unprivData),
 	privilegedSidebar: withPrefix(privData),
+	profilesSidebar: withPrefix(profilesData),
 	asmManualSidebar: withPrefix(asmManualData),
 	sbiSidebar: withPrefix(sbiData),
 	iommuSidebar: withPrefix(iommuData),
