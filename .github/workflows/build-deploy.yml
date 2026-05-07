@@ -19,6 +19,7 @@ jobs:
       trace_sha: ${{ steps.decide.outputs.trace_sha }}
       server_platform_sha: ${{ steps.decide.outputs.server_platform_sha }}
       ctr_sha: ${{ steps.decide.outputs.ctr_sha }}
+      debug_sha: ${{ steps.decide.outputs.debug_sha }}
       upstream_stamp: ${{ steps.decide.outputs.upstream_stamp }}
       should_build: ${{ steps.decide.outputs.should_build }}
     steps:
@@ -38,7 +39,8 @@ jobs:
           TRACE_SHA="$(get_sha https://github.com/riscv-non-isa/riscv-trace-spec.git)"
           SERVER_PLATFORM_SHA="$(get_sha https://github.com/riscv-non-isa/riscv-server-platform.git)"
           CTR_SHA="$(get_sha https://github.com/riscv/riscv-control-transfer-records.git)"
-          UPSTREAM_STAMP="riscv-isa-manual=$ISA_SHA;riscv-asm-manual=$ASM_SHA;riscv-sbi-doc=$SBI_SHA;riscv-iommu=$IOMMU_SHA;riscv-trace-spec=$TRACE_SHA;riscv-server-platform=$SERVER_PLATFORM_SHA;riscv-control-transfer-records=$CTR_SHA"
+          DEBUG_SHA="$(get_sha https://github.com/riscv/riscv-debug-spec.git)"
+          UPSTREAM_STAMP="riscv-isa-manual=$ISA_SHA;riscv-asm-manual=$ASM_SHA;riscv-sbi-doc=$SBI_SHA;riscv-iommu=$IOMMU_SHA;riscv-trace-spec=$TRACE_SHA;riscv-server-platform=$SERVER_PLATFORM_SHA;riscv-control-transfer-records=$CTR_SHA;riscv-debug-spec=$DEBUG_SHA"
 
           printf 'Upstream stamp: %s\n' "$UPSTREAM_STAMP"
           {
@@ -49,6 +51,7 @@ jobs:
             echo "trace_sha=$TRACE_SHA"
             echo "server_platform_sha=$SERVER_PLATFORM_SHA"
             echo "ctr_sha=$CTR_SHA"
+            echo "debug_sha=$DEBUG_SHA"
             echo "upstream_stamp=$UPSTREAM_STAMP"
           } >> "$GITHUB_OUTPUT"
 
@@ -135,6 +138,14 @@ jobs:
           path: riscv-control-transfer-records
           submodules: recursive
 
+      - name: Checkout riscv-debug-spec
+        uses: actions/checkout@v4
+        with:
+          repository: riscv/riscv-debug-spec
+          ref: ${{ needs.check.outputs.debug_sha }}
+          path: riscv-debug-spec
+          submodules: recursive
+
       - name: Resolve manual version
         working-directory: riscv-isa-manual
         run: |
@@ -200,6 +211,9 @@ jobs:
       - name: Install JS dependencies
         run: bun install --frozen-lockfile
 
+      - name: Install Python dependencies
+        run: python3 -m pip install --user sympy
+
       - name: Cache Docusaurus build cache
         uses: actions/cache@v4
         with:
@@ -226,6 +240,7 @@ jobs:
           TRACE_SPEC_DIR: ${{ github.workspace }}/riscv-trace-spec
           SERVER_PLATFORM_DIR: ${{ github.workspace }}/riscv-server-platform
           CTR_DIR: ${{ github.workspace }}/riscv-control-transfer-records
+          DEBUG_SPEC_DIR: ${{ github.workspace }}/riscv-debug-spec
 
       - name: Stamp built upstream SHAs
         run: echo '${{ needs.check.outputs.upstream_stamp }}' > static/built-upstream-shas.txt
