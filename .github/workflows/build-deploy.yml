@@ -257,6 +257,9 @@ jobs:
       - name: Stamp built upstream SHAs
         run: echo '${{ needs.check.outputs.upstream_stamp }}' > static/built-upstream-shas.txt
 
+      - name: Clear Docusaurus cache
+        run: bun run clear
+
       - name: Build Docusaurus site
         run: bun run build
 
