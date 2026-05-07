@@ -190,6 +190,12 @@ const config = {
 						position: "left",
 						label: "CTR",
 					},
+					{
+						type: "docSidebar",
+						sidebarId: "debugSidebar",
+						position: "left",
+						label: "Debug",
+					},
 					...(manualVersion
 						? [
 								{

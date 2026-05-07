@@ -7,6 +7,7 @@ import iommuData from "./docs/iommu/sidebar.json";
 import traceData from "./docs/trace/sidebar.json";
 import serverPlatformData from "./docs/server-platform/sidebar.json";
 import ctrData from "./docs/control-transfer-records/sidebar.json";
+import debugData from "./docs/debug/sidebar.json";
 
 const DOCS_BASE = "/docs";
 
@@ -49,4 +50,5 @@ export default {
 	traceSidebar: withPrefix(traceData),
 	serverPlatformSidebar: withPrefix(serverPlatformData),
 	ctrSidebar: withPrefix(ctrData),
+	debugSidebar: withPrefix(debugData),
 };
