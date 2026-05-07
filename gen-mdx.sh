@@ -115,6 +115,7 @@ MDX_REQUIRES=(
 	--require=asciidoctor-bibtex
 	--require=asciidoctor-lists
 	--require=asciidoctor-sail
+	--require="$MANUAL_DIR/src/lib/macros.rb"
 )
 
 copy_generated_docs() {
