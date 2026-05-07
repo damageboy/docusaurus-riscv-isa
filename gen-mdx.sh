@@ -24,6 +24,7 @@ TRACE_SPEC_DIR="$(resolve_dir TRACE_SPEC_DIR "$SCRIPT_DIR/../riscv-trace-spec")"
 SERVER_PLATFORM_DIR="$(resolve_dir SERVER_PLATFORM_DIR "$SCRIPT_DIR/../riscv-server-platform")"
 CTR_DIR="$(resolve_dir CTR_DIR "$SCRIPT_DIR/../riscv-control-transfer-records")"
 DEBUG_SPEC_DIR="$(resolve_dir DEBUG_SPEC_DIR "$SCRIPT_DIR/../riscv-debug-spec")"
+AIA_DIR="$(resolve_dir AIA_DIR "$SCRIPT_DIR/../riscv-aia")"
 ASCIIDOCTOR_MDX="${ASCIIDOCTOR_MDX:-/home/dmg/projects/asciidoctor/wrappers/asciidoctor-mdx}"
 
 if [ -z "${ASDF_RUBY_VERSION:-}" ] && [ -f "$MANUAL_DIR/.tool-versions" ]; then
@@ -128,6 +129,21 @@ copy_images() {
 					continue
 				fi
 				cp -r "$source_path" "$target_dir/"
+			done
+		)
+	fi
+}
+
+copy_image_files() {
+	local source_dir="$1"
+	local target_dir="$2"
+
+	mkdir -p "$target_dir"
+	if [ -d "$source_dir" ]; then
+		(
+			shopt -s nullglob nocaseglob
+			for source_path in "$source_dir"/*.{png,svg,jpg,jpeg,gif,webp}; do
+				cp "$source_path" "$target_dir/"
 			done
 		)
 	fi
@@ -409,6 +425,17 @@ build_spec_mdx \
 	"https://github.com/riscv/riscv-debug-spec/blob/main" \
 	-a "imagesdir=$DEBUG_SPEC_DIR/docs-resources/images"
 
+build_spec_mdx \
+	"$AIA_DIR" \
+	"src/riscv-interrupts.adoc" \
+	"aia" \
+	"aia" \
+	"aia" \
+	"/img/riscv-aia/" \
+	"$AIA_DIR/src" \
+	"https://github.com/riscv/riscv-aia/blob/main" \
+	-a "imagesdir=$AIA_DIR/src"
+
 echo "Copying images..."
 copy_images "$MANUAL_DIR/src/images" "$SCRIPT_DIR/static/img/riscv-isa"
 copy_images "$ASM_MANUAL_DIR/docs-resources/images" "$SCRIPT_DIR/static/img/riscv-asm-manual"
@@ -419,5 +446,6 @@ copy_images "$SERVER_PLATFORM_DIR/images" "$SCRIPT_DIR/static/img/riscv-server-p
 copy_images "$CTR_DIR/docs-resources/images" "$SCRIPT_DIR/static/img/riscv-control-transfer-records"
 copy_images "$DEBUG_SPEC_DIR/docs-resources/images" "$SCRIPT_DIR/static/img/riscv-debug-spec"
 copy_images "$DEBUG_SPEC_DIR/fig" "$SCRIPT_DIR/static/img/riscv-debug-spec/fig"
+copy_image_files "$AIA_DIR/src" "$SCRIPT_DIR/static/img/riscv-aia"
 
 echo "Done. Run 'bun run build' or 'bun run start' to rebuild the site."
