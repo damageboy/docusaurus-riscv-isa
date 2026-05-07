@@ -225,17 +225,6 @@ jobs:
       - name: Install Python dependencies
         run: python3 -m pip install --user sympy
 
-      - name: Cache Docusaurus build cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            .docusaurus
-            node_modules/.cache
-          key: docusaurus-${{ runner.os }}-${{ hashFiles('docusaurus.config.js', 'sidebars.js', 'bun.lock') }}-${{ github.sha }}
-          restore-keys: |
-            docusaurus-${{ runner.os }}-${{ hashFiles('docusaurus.config.js', 'sidebars.js', 'bun.lock') }}-
-            docusaurus-${{ runner.os }}-
-
       - name: Generate MDX docs
         run: |
           mkdir -p "$HOME/bin"
@@ -257,8 +246,8 @@ jobs:
       - name: Stamp built upstream SHAs
         run: echo '${{ needs.check.outputs.upstream_stamp }}' > static/built-upstream-shas.txt
 
-      - name: Clear Docusaurus cache
-        run: bun run clear
+      - name: Purge cached build metadata
+        run: rm -rf .docusaurus node_modules/.cache
 
       - name: Build Docusaurus site
         run: bun run build
@@ -267,6 +256,9 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: build
+
+      - name: Keep dependency cache free of build metadata
+        run: rm -rf .docusaurus node_modules/.cache
 
   deploy:
     needs: build
