@@ -237,11 +237,13 @@ jobs:
           AIA_DIR: ${{ github.workspace }}/riscv-aia
 
       - name: Restore kroki diagram cache
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
           path: static/img/riscv-isa/kroki
-          key: kroki-${{ hashFiles('docs/**/*.mdx') }}
-          restore-keys: kroki-
+          key: kroki-${{ hashFiles('docs/**/*.mdx') }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            kroki-${{ hashFiles('docs/**/*.mdx') }}-
+            kroki-
 
       - name: Stamp built upstream SHAs
         run: echo '${{ needs.check.outputs.upstream_stamp }}' > static/built-upstream-shas.txt
@@ -250,7 +252,24 @@ jobs:
         run: rm -rf .docusaurus node_modules/.cache
 
       - name: Build Docusaurus site
-        run: bun run build
+        run: |
+          for attempt in 1 2 3 4 5; do
+            if bun run build; then
+              exit 0
+            fi
+            if [ "$attempt" -eq 5 ]; then
+              exit 1
+            fi
+            echo "Docusaurus build failed (attempt $attempt/5); retrying to reuse Kroki renders cached during this run."
+            sleep $((attempt * 10))
+          done
+
+      - name: Save kroki diagram cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: static/img/riscv-isa/kroki
+          key: kroki-${{ hashFiles('docs/**/*.mdx') }}-${{ github.run_id }}-${{ github.run_attempt }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
