@@ -16,6 +16,7 @@
 /static/img/riscv-trace-spec/*
 /static/img/riscv-server-platform/*
 /static/img/riscv-control-transfer-records/*
+/static/img/riscv-debug-spec/*
 
 # Misc
 .DS_Store
